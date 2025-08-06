@@ -9,6 +9,7 @@
         "views/services.xml",
         "views/sub_category.xml",
         "views/category.xml",
+        "views/packages.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",
     ],

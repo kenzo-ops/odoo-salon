@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Booking">
                     <field name="booking_id" />
-                    <field name="services_id" />
+                    <field name="service_id" />
                     <field name="booking_date" />
                     <field name="end_date" />
                 </list>
@@ -23,6 +23,31 @@
             <field name="priority" eval="20"/>
             <field name="arch" type="xml">
                 <form string="Booking">
+                <header>
+                <button name="action_konfirmasi"
+                            type="object"
+                            string="Konfirmasi"
+                            invisible="state == 'konfirmasi' or state == 'dibatalkan' or state == 'checkin' or state == 'checkout' or state == 'batal'" />
+                    <button name="action_draft"
+                            type="object"
+                            string="Draf"
+                            invisible="state == 'draft'" />
+                    <button name="action_checkin"
+                            type="object"
+                            string="Check In"
+                            invisible="state == 'draft' or state == 'checkout' or state == 'batal' or state == 'checkin'" />
+                    <button name="action_checkout"
+                            type="object"
+                            string="Check Out"
+                            invisible="state == 'draft' or state == 'batal' or state == 'konfirmasi' or state == 'checkout'" />
+                    <button name="action_batal"
+                            type="object"
+                            string="Batalkan"
+                            invisible="state == 'draft' or state == 'batal'" />
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,konfirmasi,checkin,checkout,batal" />
+                </header>
                     <sheet>
                     <div class="oe_title">
                         <label for="booking_id" class="oe_edit_only" string="Nomor Booking"/>
@@ -30,6 +55,7 @@
                             <field name="booking_id" style="width:50%"/>
                         </h1>
                     </div>
+                    <group>
                     <group string="Informasi Pelanggan">
                     <field name="customer"/>
                     </group>
@@ -37,17 +63,36 @@
                     <field name="booking_date" />
                     <field name="end_date" />
                     </group>
+                    </group>
                     <group string="Layanan">
-                      <field name="services_id">
+                    <notebook>
+                        <page string="Layanan">
+                      <field name="service_id">
                        <list editable="bottom">
-                        <field name="name"/>
-                         <field name="description"/>
-                         <field name="duration"/>
-                         <field name="harga"/>
-                         <field name="category"/>
-                        <field name="sub_category"/>
+                         <field name="services_id"/>
+                         <field name="service_description"/>
+                         <field name="service_duration"/>
+                         <field name="service_harga"/>
+                        <field name="service_category"/>
+                        <field name="service_sub_category"/>
                        </list>
                       </field>
+                        </page>
+                        <page string="Paket">
+                        <field name="package_id">
+                         <list editable="bottom">
+                          <field name="package_id" />
+                          <field name="package_description" />
+                          <field name="package_state" widget="badge"
+                    decoration-danger="package_state=='inactive'"
+                    decoration-success="package_state=='active'" />
+                          <field name="package_harga" />
+                          <field name="package_start_date" />
+                          <field name="package_end_date" />
+                         </list>
+                        </field>
+                        </page>
+                    </notebook>
                     </group>
                     </sheet>
                 </form>

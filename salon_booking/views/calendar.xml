@@ -5,6 +5,7 @@
     <field name="model">salon.booking</field>
     <field name="arch" type="xml">
         <calendar string="Jadwal Booking Klinik" date_start="booking_date" color="customer">
+            <field name="booking_id"/>
             <field name="customer"/>
         </calendar>
     </field>

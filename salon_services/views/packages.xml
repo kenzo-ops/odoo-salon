@@ -1,0 +1,71 @@
+<odoo>
+ <data>
+
+    <record id="view_salon_packages_list" model="ir.ui.view">
+            <field name="name">List Paket Salon</field>
+            <field name="model">salon.packages</field>
+            <field name="type">list</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Sub Kategori">
+                    <field name="name" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="state" widget="badge"
+                    decoration-danger="state=='inactive'"
+                    decoration-success="state=='active'"
+                    />
+                </list>
+            </field>
+        </record>
+
+    <record id="view_salon_package_form" model="ir.ui.view">
+            <field name="name">Form Paket Salon</field>
+            <field name="model">salon.packages</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Sub Kategori">
+                    <header>
+                        <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="inactive,active" />
+                    </header>
+                    <sheet>
+                    <group>
+                    <group string="Informasi Dasar">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="status" widget="boolean_toggle"/>
+                    </group>
+                    <group string="Tanggal Berlaku">
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    </group>
+                    </group>
+                    <group string="layanan">
+                    <field name="package_service_id">
+                     <list editable="bottom">
+                     <field name="service_id" />
+                     <field name="discount" />
+                     <field name="quantity" />
+                     <field name="total_price" />
+                     </list>
+                    </field>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+ 
+    <record id="salon_packages_action" model="ir.actions.act_window">
+                <field name="name">Paket Salon</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">salon.packages</field>
+                <field name="view_mode">list,form</field>
+    </record>
+
+
+ </data>
+ 
+</odoo>

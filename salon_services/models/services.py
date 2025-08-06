@@ -10,3 +10,4 @@ class Services(models.Model):
     harga = fields.Float(string="Harga Layanan", required=True)
     category = fields.Many2one('salon.service.category', string="Kategori", required=True)
     sub_category = fields.Many2one('salon.sub.category', string="Sub Kategori", required=True)
+    packages_id = fields.Many2one('salon.packages')

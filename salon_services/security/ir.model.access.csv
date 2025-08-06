@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_salon_services,access_salon_services,model_salon_services,,1,1,1,1
 access_salon_service_category,access_salon_service_category,model_salon_service_category,,1,1,1,1
 access_salon_sub_category,access_salon_sub_category,model_salon_sub_category,,1,1,1,1
+access_salon_packages,access_salon_packages,model_salon_packages,,1,1,1,1
+access_salon_package_service,access_salon_package_service,model_salon_package_service,,1,1,1,1

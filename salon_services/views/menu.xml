@@ -1,7 +1,8 @@
 <odoo>
 	<data>
 		<menuitem id="salon_service_root" name="Salon Services" sequence="1" web_icon="salon_services,static/description/icon.png"/>
-		<menuitem id="salon_service" name="Services" parent="salon_service_root" sequence="2" action="salon_services_action"/>
-		<menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="3"/>
+		<menuitem id="salon_service" name="Layanan" parent="salon_service_root" sequence="2" action="salon_services_action"/>
+		<menuitem id="salon_packages" name="Paket" parent="salon_service_root" sequence="3" action="salon_packages_action"/>
+		<menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="4"/>
 	</data>
 </odoo>
