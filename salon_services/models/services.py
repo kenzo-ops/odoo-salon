@@ -11,6 +11,7 @@ class Services(models.Model):
     category = fields.Many2one('salon.service.category', string="Kategori", required=True)
     sub_category = fields.Many2one('salon.sub.category', string="Sub Kategori", required=True)
     packages_id = fields.Many2one('salon.packages')
+    product_id = fields.Many2one('product.template', string="Produk Terkait", readonly=True)
 
     @api.model
     def create(self, vals):
