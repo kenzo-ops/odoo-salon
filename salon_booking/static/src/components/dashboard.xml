@@ -1,0 +1,45 @@
+<templates xml:space="preserve">
+	<t t-name="owl.OwlBookingDashboard" owl="1">
+		<div class="p-3 gap-3 bg-body d-flex flex-column w-100">
+		<div class="d-flex w-100 flex-row justify-content-between">
+		<h1 class="fw-bold">Dashboard Booking</h1>
+		<select class="form-select border bg-white rounded fw-bold w-25">
+									<option class="bg-white" value="today">
+										Hari Ini
+									</option>
+									<option value="yesterday">
+										Kemarin
+									</option>
+									<option value="this_week">
+										Minggu Ini
+									</option>
+									<option value="last_week">
+										Minggu Lalu
+									</option>
+									<option value="this_month">
+										Bulan Ini
+									</option>
+									<option value="last_month">
+										Bulan Lalu
+									</option>
+									<option value="this_year">
+										Tahun Ini
+									</option>
+									<option value="last_year">
+										Tahun Lalu
+									</option>
+		</select>
+		</div>
+		<div class="d-flex flex-row gap-3 w-100">
+		<BookingKpiCard img="'/salon_services/static/src/img/customer.png'"/>
+		<BookingKpiCard img="'/salon_services/static/src/img/customer.png'"/>
+		<BookingKpiCard img="'/salon_services/static/src/img/customer.png'"/>
+		</div>
+		<div class="d-flex w-100 bg-body gap-3">
+		<BookingChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Booking'"/>
+		<BookingChart width="'w-50'" type="'bar'" isDarkMode="false" title="'Booking'"/>
+		<BookingChart width="'w-25'" type="'radar'" isDarkMode="false" title="'Booking'"/>
+		</div>
+		</div>
+	</t>
+</templates>

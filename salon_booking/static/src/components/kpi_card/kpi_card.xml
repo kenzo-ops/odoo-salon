@@ -1,0 +1,14 @@
+<templates xml:space="preserve">
+	<t t-name="owl.BookingKpiCard" owl="1">
+	<div class="d-flex bg-white w-100 rounded border border-3 shadow-lg">
+		<div class="p-3 w-100">
+		<h2 class="fw-bold">KPI</h2>
+		<h1 class="fw-bold display-6">0</h1>
+		<h3 class="text-muted fw-normal">lorem ipsum test</h3>
+		</div>
+		<div class="d-flex p-3 flex-row-reverse align-items-center w-75">
+	        <img class="d-flex justify-content-center bg-primary-kpi w-50 p-3 rounded" t-att-src="props.img" alt="Icon" />	
+		</div>
+	</div>
+	</t>
+</templates>

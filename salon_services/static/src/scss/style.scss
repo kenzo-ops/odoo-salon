@@ -1,0 +1,38 @@
+//  * {
+//     border: solid red;
+// }
+
+.bg-primary-kpi {
+background: rgba(212, 163, 115, 0.56);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(212, 163, 115, 0.3);
+}
+
+.bg-primary-select {
+background: rgba(212, 163, 115, 0.56);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(212, 163, 115, 0.3);
+}
+
+.bg-primary-chart {
+    background: rgba(212, 163, 115, 0.56);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(212, 163, 115, 0.3);
+    }
+
+.p-9 {
+    padding: 2.5rem;
+}
+
+.bg-body {
+    color: #E9E9E9;
+}
+

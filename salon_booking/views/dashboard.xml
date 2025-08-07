@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="action_owl_booking" model="ir.actions.client">
+        <field name="name">Dashboard Booking</field>
+        <field name="tag">owl.booking_dashboard</field>
+    </record>
+    </data>
+</odoo>

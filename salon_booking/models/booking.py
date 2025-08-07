@@ -7,6 +7,9 @@ class SalonBooking(models.Model):
 
     booking_id = fields.Char(string="Nomor Booking", default="New", readonly=True)
     customer = fields.Many2one("res.partner", string="Customer")
+    customer_number = fields.Char(related="customer.phone", string="Nomor Telepon", readonly=True)
+    customer_address = fields.Char(related="customer.street", string="Alamat", readonly=True)
+    customer_email = fields.Char(related="customer.email", string="Email", readonly=True)
     booking_date = fields.Datetime(string="Jadwal Booking")
     end_date = fields.Datetime(string="Waktu Selesai", readonly=True)
     state = fields.Selection(
@@ -16,9 +19,18 @@ class SalonBooking(models.Model):
         default="draft",
         string="Status"
     )
+    total_price = fields.Float(string="Total Harga", compute="_compute_total_price", store=True, readonly=True)
+
 
     service_id = fields.One2many("salon.service.temp", "booking_id", string="Layanan")
     package_id = fields.One2many("salon.package.temp", "booking_id", string="Paket Layanan")
+
+    @api.depends('service_id.service_harga', 'package_id.package_harga')
+    def _compute_total_price(self):
+        for rec in self:
+            total_services = sum(rec.service_id.mapped('service_harga'))
+            total_packages = sum(rec.package_id.mapped('package_harga'))
+            rec.total_price = total_services + total_packages
 
     def action_konfirmasi(self):
         return self.write({"state": "konfirmasi"})
