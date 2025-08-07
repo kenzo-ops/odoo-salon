@@ -6,7 +6,7 @@ const { Component, onWillStart, onWillUnmount, useState } = owl;
 
 export class BookingKpiCard extends Component {
     
-    static props = ['img'];
+    static props = ['img', 'title'];
     
     setup() {
     }

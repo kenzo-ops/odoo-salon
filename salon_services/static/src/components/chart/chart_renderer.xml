@@ -1,9 +1,9 @@
 <templates xml:space="preserve">
   <t t-name="owl.ServiceChart" owl="1">
-    <div t-att-class="'bg-white border border-3 p-4 ' + props.width">
+    <div t-att-class="'bg-white border border-3 p-4 ' + props.width" style="border-radius: 10px;">
       <h1><t t-esc="props.title"/></h1>
       <canvas t-ref="chartCanvas"></canvas>
-      <div class="d-flex justify-content-between p-3 bg-primary-chart">
+      <div class="d-flex justify-content-between p-3 bg-primary-chart rounded mt-auto">
       <h3><t t-esc="props.title"/></h3>
       <h3 class="fw-bold">0</h3>
       </div>

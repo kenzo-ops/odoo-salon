@@ -39,3 +39,6 @@ class Services(models.Model):
         vals['product_id'] = product.id
 
         return super().create(vals)
+    
+    def compute_total_service(self):
+        return self.search_count([])
