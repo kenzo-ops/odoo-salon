@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Booking">
                     <field name="booking_id" />
+                    <field name="customer" />
                     <field name="booking_date" />
                     <field name="end_date" />
                     <field name="total_price" />
@@ -78,32 +79,39 @@
                         <page string="Layanan">
                       <field name="service_id">
                        <list editable="bottom">
-                         <field name="services_id"/>
-                         <field name="service_description"/>
-                         <field name="service_duration"/>
-                         <field name="service_harga"/>
-                        <field name="service_category"/>
-                        <field name="service_sub_category"/>
+                         <field name="name"/>
+                         <field name="description"/>
+                         <field name="duration"/>
+                         <field name="harga"/>
+                        <field name="category"/>
+                        <field name="sub_category"/>
                        </list>
                       </field>
                         </page>
                         <page string="Paket">
                         <field name="package_id">
                          <list editable="bottom">
-                          <field name="package_id" />
-                          <field name="package_description" />
-                          <field name="package_state" widget="badge"
-                    decoration-danger="package_state=='inactive'"
-                    decoration-success="package_state=='active'" />
-                          <field name="package_harga" />
-                          <field name="package_start_date" />
-                          <field name="package_end_date" />
+                          <field name="name" />
+                          <field name="description" />
+                          <field name="state" widget="badge"
+                    decoration-danger="state=='inactive'"
+                    decoration-success="state=='active'" />
+                          <field name="total_price" />
+                          <field name="start_date" />
+                          <field name="end_date" />
                          </list>
                         </field>
                         </page>
                     </notebook>
                     </group>
                     </sheet>
+                    <div class="oe_chatter">
+                        <chatter>
+                            <field name="message_follower_ids" widget="mail_followers" />
+                            <field name="activity_ids" widget="mail_activity" />
+                            <field name="message_ids" widget="mail_thread" options="{'display_log_button': True}"/>
+                        </chatter>
+                    </div>
                 </form>
             </field>
         </record>

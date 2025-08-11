@@ -1,8 +1,0 @@
-<odoo>
-	<data>
-		<menuitem id="salon_booking_root" name="Salon Bookings" sequence="1" web_icon="salon_booking,static/description/icon.png"/>
-		<menuitem id="salon_booking_dashboard" name="Dashboard" parent="salon_booking_root" sequence="2" action="action_owl_booking"/>
-		<menuitem id="salon_booking" name="Booking" parent="salon_booking_root" sequence="3" action="salon_booking_action"/>
-		<menuitem id="salon_calendar" name="Jadwal Temu" parent="salon_booking_root" sequence="4" action="salon_booking_calendar"/>
-	</data>
-</odoo>

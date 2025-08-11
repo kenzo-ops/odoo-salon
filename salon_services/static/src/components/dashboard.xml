@@ -1,45 +1,55 @@
 <templates xml:space="preserve">
 	<t t-name="owl.OwlServiceDashboard" owl="1">
 		<div class="p-3 gap-3 bg-body d-flex flex-column w-100">
-		<div class="d-flex w-100 flex-row justify-content-between">
-		<h1 class="fw-bold">Dashboard Layanan</h1>
-		<select class="form-select border bg-white rounded fw-bold w-25">
-									<option class="bg-white" value="today">
-										Hari Ini
-									</option>
-									<option value="yesterday">
-										Kemarin
-									</option>
-									<option value="this_week">
-										Minggu Ini
-									</option>
-									<option value="last_week">
-										Minggu Lalu
-									</option>
-									<option value="this_month">
-										Bulan Ini
-									</option>
-									<option value="last_month">
-										Bulan Lalu
-									</option>
-									<option value="this_year">
-										Tahun Ini
-									</option>
-									<option value="last_year">
-										Tahun Lalu
-									</option>
-		</select>
-		</div>
-		<div class="d-flex flex-row gap-3 w-100">
-		<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'"/>
-		<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'"/>
-		<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'"/>
-		</div>
-		<div class="d-flex w-100 bg-body gap-3">
-		<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Layanan'"/>
-		<ServiceChart width="'w-50'" type="'bar'" isDarkMode="false" title="'Layanan'"/>
-		<ServiceChart width="'w-25'" type="'radar'" isDarkMode="false" title="'Layanan'"/>
-		</div>
+			<div class="d-flex w-100 justify-content-between align-items-center my-3">
+				<h1 class="fw-bold m-0">
+					Dashboard Salon
+				</h1>
+				<div class="d-flex align-items-center gap-3">
+					<input type="date" class="form-control fw-bold border bg-white rounded" style="width: 160px;" title="Pilih Tanggal" />
+					<select class="form-select border bg-white rounded fw-bold" style="width: 125px;">
+						<option value="today">
+							Hari Ini
+						</option>
+						<option value="yesterday">
+							Kemarin
+						</option>
+						<option value="this_week">
+							Minggu Ini
+						</option>
+						<option value="last_week">
+							Minggu Lalu
+						</option>
+						<option value="this_month">
+							Bulan Ini
+						</option>
+						<option value="last_month">
+							Bulan Lalu
+						</option>
+						<option value="this_year">
+							Tahun Ini
+						</option>
+						<option value="last_year">
+							Tahun Lalu
+						</option>
+					</select>
+					<div class="d-flex align-items-center text-muted" title="Auto-refresh setiap 5 detik">
+						<div style="background-color: #ffffff; padding: 6px; border-radius: 5px;" class="border">
+							<img t-att-src="'/salon_services/static/src/img/wall-clock.png'" alt="Clock Icon" style="width: 18px; height: 18px; cursor: pointer;" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex flex-row gap-3 w-100">
+				<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'" title="'Total Layanan'" />
+				<ServiceKpiCard img="'/salon_services/static/src/img/services.png'" title="'Layanan Aktif'"/>
+				<ServiceKpiCard img="'/salon_services/static/src/img/bundle.png'" title="'Paket'"/>
+			</div>
+			<div class="d-flex w-100 bg-body gap-3">
+				<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Layanan'" />
+				<ServiceChart width="'w-50'" type="'bar'" isDarkMode="false" title="'Layanan'" />
+				<ServiceChart width="'w-25'" type="'radar'" isDarkMode="false" title="'Layanan'" />
+			</div>
 		</div>
 	</t>
 </templates>

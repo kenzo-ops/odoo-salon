@@ -1,9 +1,12 @@
 from odoo import fields, models, api 
+from datetime import timedelta
 
 class SalonBooking(models.Model):
     _name = "salon.booking"
     _description = "Salon Booking"
     _rec_name = "booking_id"
+    _inherit            = ['mail.thread', 'mail.activity.mixin']
+
 
     booking_id = fields.Char(string="Nomor Booking", default="New", readonly=True)
     customer = fields.Many2one("res.partner", string="Customer")
@@ -11,7 +14,7 @@ class SalonBooking(models.Model):
     customer_address = fields.Char(related="customer.street", string="Alamat", readonly=True)
     customer_email = fields.Char(related="customer.email", string="Email", readonly=True)
     booking_date = fields.Datetime(string="Jadwal Booking")
-    end_date = fields.Datetime(string="Waktu Selesai", readonly=True)
+    end_date = fields.Datetime(string="Waktu Selesai", compute="_compute_end_date", store=True, readonly=True)
     state = fields.Selection(
         selection=[
             ("draft", "Draf"),("konfirmasi","Dikonfirmasi"),("checkin","Check In"),("checkout","Checkout"),("batal","Dibatalkan")
@@ -22,10 +25,25 @@ class SalonBooking(models.Model):
     total_price = fields.Float(string="Total Harga", compute="_compute_total_price", store=True, readonly=True)
 
 
-    service_id = fields.One2many("salon.service.temp", "booking_id", string="Layanan")
-    package_id = fields.One2many("salon.package.temp", "booking_id", string="Paket Layanan")
+    service_id = fields.One2many("salon.services", "booking_id", string="Layanan")
+    package_id = fields.One2many("salon.packages", "booking_id", string="Paket Layanan")
 
-    @api.depends('service_id.service_harga', 'package_id.package_harga')
+
+    @api.depends('booking_date', 'service_id.duration')
+    def _compute_end_date(self):
+        for rec in self:
+            if rec.booking_date and rec.service_id:
+                total_duration = sum(
+                    service.services_id.duration or 0
+                    for service in rec.service_id
+                    if service.services_id
+                )
+                rec.end_date = rec.booking_date + timedelta(minutes=total_duration)
+            else:
+                rec.end_date = False
+
+
+    @api.depends('service_id.harga', 'package_id.total_price')
     def _compute_total_price(self):
         for rec in self:
             total_services = sum(rec.service_id.mapped('service_harga'))
