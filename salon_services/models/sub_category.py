@@ -13,8 +13,8 @@ class SubCategory(models.Model):
     
     state = fields.Selection(
         selection=[
-            ("inactive", "Tidak Aktif"),
-            ("active", "Aktif"),
+            ("inactive", "Inactive"),
+            ("active", "Active"),
         ],
         string="Status",
         default="inactive"

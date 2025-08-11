@@ -36,3 +36,10 @@ border: 1px solid rgba(212, 163, 115, 0.3);
     color: #E9E9E9;
 }
 
+.bg-selector {
+    background: rgba(212, 163, 115, 0.56);border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(8.8px);
+-webkit-backdrop-filter: blur(8.8px);
+border: 1px solid rgba(58, 47, 47, 0.3);
+}

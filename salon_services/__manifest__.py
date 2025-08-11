@@ -18,6 +18,7 @@
         "views/dashboard.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",
+        "data/ir.sequence.xml",
     ],
     "assets" : {
     "web.assets_backend" : [

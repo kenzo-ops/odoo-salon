@@ -56,7 +56,7 @@
                 </header>
                     <sheet>
                     <div class="oe_title">
-                        <label for="booking_id" class="oe_edit_only" string="Nomor Booking"/>
+                    <label for="booking_id" class="oe_edit_only" string="Nomor Booking"/>
                         <h1>
                             <field name="booking_id" style="width:50%"/>
                         </h1>
@@ -77,28 +77,28 @@
                     <group string="Layanan">
                     <notebook>
                         <page string="Layanan">
-                      <field name="service_id">
+                      <field name="service_booking_id">
                        <list editable="bottom">
-                         <field name="name"/>
-                         <field name="description"/>
-                         <field name="duration"/>
-                         <field name="harga"/>
-                        <field name="category"/>
-                        <field name="sub_category"/>
+                         <field name="service_id"/>
+                         <field name="service_description"/>
+                         <field name="service_duration"/>
+                         <field name="service_price"/>
+                        <field name="service_category"/>
+                        <field name="service_sub_category"/>
                        </list>
                       </field>
                         </page>
                         <page string="Paket">
-                        <field name="package_id">
+                        <field name="package_booking_id">
                          <list editable="bottom">
-                          <field name="name" />
-                          <field name="description" />
-                          <field name="state" widget="badge"
-                    decoration-danger="state=='inactive'"
-                    decoration-success="state=='active'" />
-                          <field name="total_price" />
-                          <field name="start_date" />
-                          <field name="end_date" />
+                          <field name="package_id" />
+                          <field name="package_description" />
+                          <field name="package_state" widget="badge"
+                    decoration-danger="package_state=='inactive'"
+                    decoration-success="package_state=='active'" />
+                          <field name="package_total_price" />
+                          <field name="package_start_date" />
+                          <field name="package_end_date" />
                          </list>
                         </field>
                         </page>
