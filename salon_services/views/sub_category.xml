@@ -2,7 +2,7 @@
  <data>
 
     <record id="view_salon_sub_category_list" model="ir.ui.view">
-            <field name="name">List Sub Kategori Salon</field>
+            <field name="name">List of Salon Sub Categories</field>
             <field name="model">salon.sub.category</field>
             <field name="type">list</field>
             <field name="priority" eval="8"/>
@@ -18,19 +18,19 @@
         </record>
 
     <record id="view_salon_sub_category_form" model="ir.ui.view">
-            <field name="name">Form Sub Kategori Salon</field>
+            <field name="name">Salon Sub Category Form</field>
             <field name="model">salon.sub.category</field>
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Sub Kategori">
+                <form string="Sub Category">
                     <header>
                         <field name="state"
                         widget="statusbar"
                         statusbar_visible="inactive,active" />
                     </header>
                     <sheet>
-                    <group string="Sub Kategori Layanan">
+                    <group string="Service Sub Category">
                     <field name="name"/>
                     <field name="status" widget="boolean_toggle"/>
                     </group>
@@ -43,13 +43,13 @@
         </record>
  
     <record id="salon_services_sub_category_action" model="ir.actions.act_window">
-                <field name="name">Sub Kategori Salon</field>
+                <field name="name">Salon Sub Category</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.sub.category</field>
                 <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="salon_service_sub_category" name="Sub Kategori" parent="salon_master_data" sequence="7" action="salon_services_sub_category_action"/>
+    <menuitem id="salon_service_sub_category" name="Sub Category" parent="salon_master_data" sequence="7" action="salon_services_sub_category_action"/>
 
  </data>
  

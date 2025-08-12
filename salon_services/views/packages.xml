@@ -25,7 +25,7 @@
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Sub Kategori">
+                <form string="Sub Category">
                     <header>
                         <field name="state"
                         widget="statusbar"
@@ -33,17 +33,17 @@
                     </header>
                     <sheet>
                     <group>
-                    <group string="Informasi Dasar">
+                    <group string="Basic Information">
                     <field name="name"/>
                     <field name="description"/>
                     <field name="status" widget="boolean_toggle"/>
                     </group>
-                    <group string="Tanggal Berlaku">
+                    <group string="Effective date">
                     <field name="start_date"/>
                     <field name="end_date"/>
                     </group>
                     </group>
-                    <group string="layanan">
+                    <group string="Service">
                     <field name="package_service_id">
                      <list editable="bottom">
                      <field name="service_id" />
@@ -59,7 +59,7 @@
         </record>
  
     <record id="salon_packages_action" model="ir.actions.act_window">
-                <field name="name">Paket Salon</field>
+                <field name="name">Salon Package</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.packages</field>
                 <field name="view_mode">list,form</field>

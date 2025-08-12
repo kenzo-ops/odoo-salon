@@ -26,7 +26,7 @@
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Cabang">
+                <form string="Branch">
                 <header>
                         <field name="state"
                         widget="statusbar"
@@ -34,21 +34,21 @@
                 </header>
                     <sheet>
                     <group>
-                    <group string="Informasi Cabang">
+                    <group string="Branch Information">
                     <field name="name"/>
                     <field name="telephone_number"/>
                     <field name="email"/>
                     <field name="manager_id" />
                     <field name="status" widget="boolean_toggle"/>
                     </group>
-                    <group string="Alamat">
+                    <group string="Address">
                      <field name="country_id" />
                      <field name="state_id" domain="[('country_id', '=', country_id)]" options="{'no_create': True}" />
                      <field name="city_id" />
                      <field name="address" />
                     </group>
                     <notebook>
-                        <page string="Layanan Cabang">
+                        <page string="Branch Services">
                             <field name="service_id" options="{'no_create': True}">
                                 <list editable="bottom">
                                 <field name="name"/>
@@ -67,7 +67,7 @@
         </record>
 
     <record id="salon_branches_action" model="ir.actions.act_window">
-                <field name="name">Cabang Salon</field>
+                <field name="name">Salon Branch</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.branches</field>
                 <field name="view_mode">list,form</field>

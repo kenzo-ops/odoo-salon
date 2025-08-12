@@ -32,11 +32,11 @@
                 <header>
                 <button name="action_konfirmasi"
                             type="object"
-                            string="Konfirmasi"
+                            string="Confirm"
                             invisible="state == 'konfirmasi' or state == 'dibatalkan' or state == 'checkin' or state == 'checkout' or state == 'batal'" />
                     <button name="action_draft"
                             type="object"
-                            string="Draf"
+                            string="Draft"
                             invisible="state == 'draft'" />
                     <button name="action_checkin"
                             type="object"
@@ -48,7 +48,7 @@
                             invisible="state == 'draft' or state == 'batal' or state == 'konfirmasi' or state == 'checkout'" />
                     <button name="action_batal"
                             type="object"
-                            string="Batalkan"
+                            string="Cancel"
                             invisible="state == 'draft' or state == 'batal'" />
                     <field name="state"
                            widget="statusbar"
@@ -56,27 +56,27 @@
                 </header>
                     <sheet>
                     <div class="oe_title">
-                    <label for="booking_id" class="oe_edit_only" string="Nomor Booking"/>
+                    <label for="booking_id" class="oe_edit_only" string="Booking Number"/>
                         <h1>
                             <field name="booking_id" style="width:50%"/>
                         </h1>
                     </div>
                     <group>
-                    <group string="Informasi Pelanggan">
+                    <group string="Customer Information">
                     <field name="customer"/>
                     <field name="customer_number"/>
                     <field name="customer_address"/>
                     <field name="customer_email"/>
                     </group>
-                    <group string="Informasi Booking">
+                    <group string="Booking Information">
                     <field name="booking_date" />
                     <field name="end_date" />
                     <field name="total_price" />
                     </group>
                     </group>
-                    <group string="Layanan">
+                    <group string="Services">
                     <notebook>
-                        <page string="Layanan">
+                        <page string="Services">
                       <field name="service_booking_id">
                        <list editable="bottom">
                          <field name="service_id"/>
@@ -88,7 +88,7 @@
                        </list>
                       </field>
                         </page>
-                        <page string="Paket">
+                        <page string="Package">
                         <field name="package_booking_id">
                          <list editable="bottom">
                           <field name="package_id" />
@@ -117,7 +117,7 @@
         </record>
 
         <record id="salon_booking_action" model="ir.actions.act_window">
-                <field name="name">Salon Booking</field>
+                <field name="name">Salon Booking List</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.booking</field>
                 <field name="view_mode">list,form</field>

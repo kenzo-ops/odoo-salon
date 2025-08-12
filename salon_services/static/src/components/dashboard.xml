@@ -48,7 +48,7 @@
 				<div class="d-flex w-100 bg-body gap-3">
 					<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Total Service Status'" chartMode="'service_status'"/>
 					<ServiceChart width="'w-50'" type="'line'" isDarkMode="false" title="'Booking Trends'" chartMode="'booking_trend'"/>
-					<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Layanan'" chartMode="'top_services'"/>
+					<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Top Booking Status'" chartMode="'booking_status'"/>
 				</div>
 			</div>
 		</t>

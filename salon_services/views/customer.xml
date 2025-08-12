@@ -13,7 +13,7 @@
     </record>
 
     <record id="action_salon_customer_booking_stats" model="ir.actions.act_window">
-        <field name="name">Statistik Customer</field>
+        <field name="name">Customer Statistics</field>
         <field name="res_model">salon.customer.booking</field>
         <field name="view_mode">list</field>
         <field name="help" type="html">

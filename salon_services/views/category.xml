@@ -23,18 +23,18 @@
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Kategori">
+                <form string="Category">
                     <header>
                         <field name="state"
                         widget="statusbar"
                         statusbar_visible="inactive,active" />
                     </header>
                     <sheet>
-                    <group string="Kategori Layanan">
+                    <group string="Service Information">
                     <field name="name"/>
                     <field name="status" widget="boolean_toggle"/>
                     </group>
-                    <group string="Kategori Layanan">
+                    <group string="Service Category">
                     <field name="sub_category_id">
                      <list editable="bottom">
                        <field name="name" />
@@ -47,13 +47,13 @@
         </record>
  
     <record id="salon_services_category_action" model="ir.actions.act_window">
-                <field name="name">Salon Category</field>
+                <field name="name">Salon Categories</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.service.category</field>
                 <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="salon_service_category" name="Kategori" parent="salon_master_data" sequence="6" action="salon_services_category_action"/>
+    <menuitem id="salon_service_category" name="Category" parent="salon_master_data" sequence="6" action="salon_services_category_action"/>
 
  </data>
  

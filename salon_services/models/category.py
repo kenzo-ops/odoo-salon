@@ -4,22 +4,22 @@ class ServiceCategory(models.Model):
     _name = "salon.service.category"
     _description = "Salon Service Category"
 
-    name = fields.Char(string="Nama Kategori", required=True)
-    sub_category_id = fields.One2many("salon.sub.category", "category_id", string="Sub Kategori", readonly=True)
+    name = fields.Char(string="Category Name", required=True)
+    sub_category_id = fields.One2many("salon.sub.category", "category_id", string="Sub Category", readonly=True)
     status = fields.Boolean(string="Status", required=True)
     state = fields.Selection(
         selection = [
-            ("inactive", "Tidak Aktif"),
-            ("active", "Aktif"),
+            ("inactive", "Inactive"),
+            ("active", "Active"),
         ],
         string="Status",
         default = "inactive"
         )
     product_category_id = fields.Many2one(
         'product.category',
-        string='Kategori Produk Terkait',
+        string='Related Product Categories',
         readonly=True,
-        help="Kategori Produk yang dibuat otomatis"
+        help="Auto-generated Product Categories"
     )
 
     @api.onchange('status')
@@ -30,7 +30,7 @@ class ServiceCategory(models.Model):
     def create(self, vals):
         # Buat product.category terlebih dahulu
         product_category = self.env['product.category'].create({
-            'name': vals.get('name', 'Tanpa Nama')
+            'name': vals.get('name', 'No Name')
         })
         # Simpan ID-nya ke field relasi
         vals['product_category_id'] = product_category.id

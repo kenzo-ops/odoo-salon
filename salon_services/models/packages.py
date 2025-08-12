@@ -4,23 +4,23 @@ class Packages(models.Model):
     _name = "salon.packages"
     _description = "Salon Packages"
 
-    name = fields.Char(string="Nama", required=True)
-    description = fields.Char(string="Deskripsi")
+    name = fields.Char(string="Name", required=True)
+    description = fields.Char(string="Description")
     status = fields.Boolean(string="Status", required=True)
     state = fields.Selection(
         selection = [
-            ("inactive", "Tidak Aktif"),
-            ("active", "Aktif"),
+            ("inactive", "Inactive"),
+            ("active", "Active"),
         ],
         string="Status",
         default = "inactive"
         )
-    start_date = fields.Date(string="Tanggal Berlaku", required=True)
-    end_date = fields.Date(string="Tanggal Berakhir", required=True)
-    total_price = fields.Float(string="Total Harga Paket", compute="_compute_total_package_price", store=True, readonly=True)
+    start_date = fields.Date(string="Effective date", required=True)
+    end_date = fields.Date(string="End Date", required=True)
+    total_price = fields.Float(string="Total Package Price", compute="_compute_total_package_price", store=True, readonly=True)
 
     booking_id = fields.Many2one("salon.booking")
-    package_service_id = fields.One2many('salon.package.service','packages_id',string="Layanan",required=True)
+    package_service_id = fields.One2many('salon.package.service','packages_id',string="Service",required=True)
 
     @api.depends('package_service_id.total_price')
     def _compute_total_package_price(self):
