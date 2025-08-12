@@ -7,12 +7,16 @@
             <field name="type">list</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <list string="Layanan">
+                <list string="Services">
                     <field name="name" />
                     <field name="description" />
                     <field name="duration" />
                     <field name="harga" />
-                </list>
+                    <field name="state" widget="badge"
+                    decoration-danger="state=='inactive'"
+                    decoration-success="state=='active'"
+                    />                
+                    </list>
             </field>
         </record>
 
@@ -22,19 +26,25 @@
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Layanan">
+                <form string="Services">
+                    <header>
+                        <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="inactive,active" />
+                    </header>
                     <sheet>
                     <group>
-                    <group string="Informasi Layanan">
+                    <group string="Service Information">
                     <field name="name"/>
                     <field name="description"/>
                     </group>
-                    <group string="Kategori">
+                    <group string="Category">
                     <field name="category" />
                     <field name="sub_category" domain="[('category_id', '=', category)]" options="{'no_create': True}"/>
+                    <field name="status" widget="boolean_toggle"/>
                     </group>
                     </group>
-                    <group string="Harga Dan Lain-Lain">
+                    <group string="Price and Other">
                     <field name="duration" />
                     <field name="harga" />
                     </group>

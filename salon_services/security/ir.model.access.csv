@@ -4,3 +4,11 @@ access_salon_service_category,access_salon_service_category,model_salon_service_
 access_salon_sub_category,access_salon_sub_category,model_salon_sub_category,,1,1,1,1
 access_salon_packages,access_salon_packages,model_salon_packages,,1,1,1,1
 access_salon_package_service,access_salon_package_service,model_salon_package_service,,1,1,1,1
+
+access_salon_branches,access_salon_branches,model_salon_branches,,1,1,1,1
+access_salon_branch_manager,access_salon_branch_manager,model_salon_branch_manager,,1,1,1,1
+
+access_salon_bookings,access_salon_bookings,model_salon_booking,,1,1,1,1
+access_salon_booking_service,access_salon_booking_service,model_salon_booking_service,,1,1,1,1
+access_salon_booking_package,access_salon_booking_package,model_salon_booking_package,,1,1,1,1
+access_salon_customer_booking,access_salon_customer_booking,model_salon_customer_booking,,1,1,1,1

@@ -19,6 +19,7 @@ class Packages(models.Model):
     end_date = fields.Date(string="Tanggal Berakhir", required=True)
     total_price = fields.Float(string="Total Harga Paket", compute="_compute_total_package_price", store=True, readonly=True)
 
+    booking_id = fields.Many2one("salon.booking")
     package_service_id = fields.One2many('salon.package.service','packages_id',string="Layanan",required=True)
 
     @api.depends('package_service_id.total_price')

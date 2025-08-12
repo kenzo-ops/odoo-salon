@@ -1,9 +1,22 @@
 <odoo>
-	<data>
-		<menuitem id="salon_service_root" name="Salon Services" sequence="1" web_icon="salon_services,static/description/icon.png"/>
-		<menuitem id="salon_dashboard" name="Dashboard" parent="salon_service_root" sequence="2" action="action_owl_service"/>
-		<menuitem id="salon_service" name="Layanan" parent="salon_service_root" sequence="3" action="salon_services_action"/>
-		<menuitem id="salon_packages" name="Paket" parent="salon_service_root" sequence="4" action="salon_packages_action"/>
-		<menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="5"/>
-	</data>
+  <data>
+    <menuitem id="salon_service_root" name="Hospitality" sequence="1" web_icon="salon_services,static/description/icon.png"/>
+    <menuitem id="salon_dashboard" name="Dashboard" parent="salon_service_root" sequence="2" action="action_owl_service"/>
+    
+    <menuitem id="salon_booking" name="Bookings" sequence="3" parent="salon_service_root"/>
+    <menuitem id="salon_bookings" name="Bookings" parent="salon_booking" action="salon_booking_action"/>
+    <menuitem id="salon_customers" name="Customer" parent="salon_booking" action="action_salon_customer_booking_stats"/>
+
+    <menuitem id="salon_calendar" name="Appointment" sequence="4" parent="salon_service_root" action="salon_booking_calendar"/>
+    
+
+    <menuitem id="salon_management" name="Management" sequence="5" parent="salon_service_root"/>
+    <menuitem id="salon_management_branch" name="Branch Office" parent="salon_management" action="salon_branches_action"/>
+    <menuitem id="salon_manager_branch" name="Branch Manager" parent="salon_management" action="hr_employee_branch_manager_action"/>
+    
+    <menuitem id="salon_service" name="Service" parent="salon_service_root" sequence="6"/>
+    <menuitem id="salon_services" name="Service List" parent="salon_service" action="salon_services_action"/>
+    <menuitem id="salon_packages" name="Service Package" parent="salon_service" action="salon_packages_action"/>
+    <menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="7"/>
+  </data>
 </odoo>

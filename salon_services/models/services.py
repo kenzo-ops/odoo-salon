@@ -10,11 +10,34 @@ class Services(models.Model):
     harga = fields.Float(string="Harga Layanan", required=True)
     category = fields.Many2one('salon.service.category', string="Kategori", required=True)
     sub_category = fields.Many2one('salon.sub.category', string="Sub Kategori", required=True)
-    packages_id = fields.Many2one('salon.packages')
+    status = fields.Boolean(string="Status", required=True)
+    state = fields.Selection(
+        selection=[
+            ("inactive", "Inactive"),
+            ("active", "Active"),
+        ],
+        string="Status",
+        default="inactive"
+    )
+
     product_id = fields.Many2one('product.template', string="Produk Terkait", readonly=True)
+    packages_id = fields.Many2one('salon.packages') 
+    branch_id = fields.Many2one("salon.branches", string="Cabang")
+    booking_id = fields.Many2one("salon.booking")
+
+
+    @api.onchange('status')
+    def _onchange_status(self):
+        for rec in self:
+            rec._sync_state_with_status()
+
+    def _sync_state_with_status(self):
+        for rec in self:
+            rec.state = 'active' if rec.status else 'inactive'
 
     @api.model
     def create(self, vals):
+        vals['state'] = 'active' if vals.get('status') else 'inactive'
         name = vals.get('name')
         harga = vals.get('harga', 0.0)
         description = vals.get('description', '')
@@ -40,5 +63,17 @@ class Services(models.Model):
 
         return super().create(vals)
     
-    def compute_total_service(self):
-        return self.search_count([])
+    def write(self, vals):
+        if 'status' in vals:
+            vals['state'] = 'active' if vals['status'] else 'inactive'
+        return super().write(vals)
+    
+
+    @api.model
+    def get_service_status_count(self):
+        active_count = self.search_count([('state', '=', 'active')])
+        inactive_count = self.search_count([('state', '=', 'inactive')])
+        return {
+            'active': active_count,
+            'inactive': inactive_count
+        }
