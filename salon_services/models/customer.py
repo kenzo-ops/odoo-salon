@@ -7,9 +7,9 @@ class SalonCustomerBooking(models.Model):
     _rec_name = 'customer_id'
 
     customer_id = fields.Many2one('res.partner', string='Customer', readonly=True)
-    total_booking = fields.Integer(string='Total Booking', readonly=True)
-    total_spent = fields.Float(string='Total Pengeluaran', readonly=True)
-    last_booking_date = fields.Datetime(string='Booking Terakhir', readonly=True)
+    total_booking = fields.Integer(string='Total Bookings', readonly=True)
+    total_spent = fields.Float(string='Total Expenditures', readonly=True)
+    last_booking_date = fields.Datetime(string='Last Booking', readonly=True)
 
 
     def init(self):

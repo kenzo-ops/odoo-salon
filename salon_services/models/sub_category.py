@@ -7,8 +7,8 @@ class SubCategory(models.Model):
     _name = "salon.sub.category"
     _description = "Salon Sub Category"
 
-    name = fields.Char(string="Nama", required=True)
-    category_id = fields.Many2one("salon.service.category", string="Kategori Utama", required=True)
+    name = fields.Char(string="Name", required=True)
+    category_id = fields.Many2one("salon.service.category", string="Main Categories", required=True)
     status = fields.Boolean(string="Status", required=True)
     
     state = fields.Selection(
@@ -22,7 +22,7 @@ class SubCategory(models.Model):
 
     product_sub_category_id = fields.Many2one(
         'product.category',
-        string="Sub Kategori Produk Terkait",
+        string="Related Product Sub Categories",
         readonly=True
     )
 

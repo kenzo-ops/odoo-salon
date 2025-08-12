@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_salon_bookings,access_salon_bookings,model_salon_booking,,1,1,1,1
-access_salon_service_temp,access_salon_service_temp,model_salon_service_temp,,1,1,1,1
-access_salon_package_temp,access_salon_package_temp,model_salon_package_temp,,1,1,1,1

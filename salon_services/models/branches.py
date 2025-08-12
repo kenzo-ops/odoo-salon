@@ -4,18 +4,18 @@ class Branches(models.Model):
     _name = "salon.branches"
     _description = "Cabang Salon"
 
-    name = fields.Char(string="Nama Cabang", required=True)
-    telephone_number = fields.Char(string="Nomor Telepon", required=True)
+    name = fields.Char(string="Branch Name", required=True)
+    telephone_number = fields.Char(string="Phone number", required=True)
     email = fields.Char(string="Email", required=True)
-    country_id = fields.Many2one("res.country", string="Negara")
-    state_id = fields.Many2one("res.country.state", string="Provinsi")
-    city_id = fields.Char(string="Kota")
-    address = fields.Char(string="Alamat")
+    country_id = fields.Many2one("res.country", string="Country")
+    state_id = fields.Many2one("res.country.state", string="Province")
+    city_id = fields.Char(string="City")
+    address = fields.Char(string="Address")
     status = fields.Boolean(string="Status", required=True)
     state = fields.Selection(
         selection=[
-            ("inactive", "Tidak Aktif"),
-            ("active", "Aktif"),
+            ("inactive", "Inactive"),
+            ("active", "Active"),
         ],
         string="Status",
         default="inactive"
@@ -23,11 +23,11 @@ class Branches(models.Model):
 
     manager_id = fields.Many2one(
         "hr.employee",
-        string="Manager Cabang",
+        string="Branch Manager",
         domain="[('job_id.name', 'ilike', 'Manager Cabang')]"
     )
 
-    service_id = fields.One2many('salon.services', 'branch_id', string="Layanan Cabang Yang Tersedia")
+    service_id = fields.One2many('salon.services', 'branch_id', string="Available Branch Services")
 
 
     @api.onchange('status')

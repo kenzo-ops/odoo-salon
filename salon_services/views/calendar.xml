@@ -4,7 +4,7 @@
     <field name="name">Salon Booking Calendar</field>
     <field name="model">salon.booking</field>
     <field name="arch" type="xml">
-        <calendar string="Jadwal Booking Klinik" date_start="booking_date" color="customer">
+        <calendar string="Salon Booking Schedule" date_start="booking_date" color="customer">
             <field name="booking_id"/>
             <field name="customer"/>
         </calendar>
@@ -12,7 +12,7 @@
     </record>
 
     <record id="salon_booking_calendar" model="ir.actions.act_window">
-        <field name="name">Kalender Salon</field>
+        <field name="name">Salon Calendar</field>
         <field name="res_model">salon.booking</field>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="view_salon_booking_calendar"/>

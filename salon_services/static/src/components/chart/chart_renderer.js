@@ -20,8 +20,8 @@ export class ServiceChart extends Component {
             await this.fetchServiceStatusChart();
         } else if (this.props.chartMode === "booking_trend") {
             await this.fetchBookingTrendChart();
-        } else if (this.props.chartMode === "top_services") {
-            await this.fetchTopServicesChart();
+        } else if (this.props.chartMode === "booking_status") {
+            await this.fetchBookingStatusChart();
         }
     }
 
@@ -70,39 +70,40 @@ export class ServiceChart extends Component {
     }
 
     /** 3. Chart Top Services **/
-    async fetchTopServicesChart() {
-        const records = await this.env.services.orm.call(
-            "salon.booking.service",
-            "get_top_services",
+    async fetchBookingStatusChart() {
+        const records = await this.env.services.orm.searchRead(
+            "salon.booking",
             [],
-            { limit: 5 }
+            ["state"]
         );
-
-        const labels = [];
-        const values = [];
-        let totalSum = 0;
-
-        for (const r of records) {
-            if (Array.isArray(r.service_id) && r.service_id.length > 1) {
-                labels.push(r.service_id[1]);
-
-                const val = r.total || 0;
-                totalSum += val;
-
-                // Untuk chart, jika val 0 kasih nilai kecil supaya chart gak kosong
-                values.push(val > 0 ? val : 0.0001);
+    
+        // Hitung jumlah per status
+        const statusCounts = {
+            draft: 0,
+            konfirmasi: 0,
+            checkin: 0,
+            checkout: 0,
+            batal: 0,
+        };
+    
+        for (const rec of records) {
+            if (rec.state && statusCounts.hasOwnProperty(rec.state)) {
+                statusCounts[rec.state]++;
             }
         }
-
-        if (labels.length === 0) {
-            labels.push("No Data");
-            values.push(0.0001);
-            this.state.total = 0;
-        } else {
-            this.state.total = totalSum; // SET TOTAL DI SINI, PASTIKAN TIDAK DI OVERRIDE
-        }
-
-        await this.renderChart(labels, values, "Top Services");
+    
+        const labels = ["Draft", "Confirmed", "Check In", "Check Out", "Canceled"];
+        const values = [
+            statusCounts.draft,
+            statusCounts.konfirmasi,
+            statusCounts.checkin,
+            statusCounts.checkout,
+            statusCounts.batal
+        ];
+    
+        this.state.total = values.reduce((a, b) => a + b, 0);
+    
+        await this.renderChart(labels, values, "Status Booking");
     }
 
     async renderChart(labels, values, labelTitle) {

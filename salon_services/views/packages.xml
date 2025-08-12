@@ -2,12 +2,12 @@
  <data>
 
     <record id="view_salon_packages_list" model="ir.ui.view">
-            <field name="name">Package List</field>
+            <field name="name">List Paket Salon</field>
             <field name="model">salon.packages</field>
             <field name="type">list</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <list string="Sub Category">
+                <list string="Sub Kategori">
                     <field name="name" />
                     <field name="start_date" />
                     <field name="end_date" />
@@ -33,17 +33,17 @@
                     </header>
                     <sheet>
                     <group>
-                    <group string="Information">
+                    <group string="Basic Information">
                     <field name="name"/>
                     <field name="description"/>
                     <field name="status" widget="boolean_toggle"/>
                     </group>
-                    <group string="Start Date">
+                    <group string="Effective date">
                     <field name="start_date"/>
                     <field name="end_date"/>
                     </group>
                     </group>
-                    <group string="Services">
+                    <group string="Service">
                     <field name="package_service_id">
                      <list editable="bottom">
                      <field name="service_id" />
@@ -59,7 +59,7 @@
         </record>
  
     <record id="salon_packages_action" model="ir.actions.act_window">
-                <field name="name">Paket Salon</field>
+                <field name="name">Salon Package</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.packages</field>
                 <field name="view_mode">list,form</field>

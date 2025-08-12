@@ -7,7 +7,7 @@
             <field name="type">list</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <list string="Services">
+                <list string="Layanan">
                     <field name="name" />
                     <field name="description" />
                     <field name="duration" />
@@ -26,7 +26,7 @@
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Services">
+                <form string="Service">
                     <header>
                         <field name="state"
                         widget="statusbar"
@@ -44,7 +44,7 @@
                     <field name="status" widget="boolean_toggle"/>
                     </group>
                     </group>
-                    <group string="Price and Other">
+                    <group string="Prices and Others">
                     <field name="duration" />
                     <field name="harga" />
                     </group>
