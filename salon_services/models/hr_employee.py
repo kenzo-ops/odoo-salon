@@ -10,7 +10,7 @@ class HrEmployeeInherit(models.Model):
     @api.depends('job_id.name')
     def _compute_is_branch_manager(self):
         for rec in self:
-            rec.is_branch_manager = rec.job_id.name == "Manager Cabang"
+            rec.is_branch_manager = rec.job_id.name == "Branch Manager"
             rec.is_staff = rec.job_id.name == "Staff"
 
-    
+                                                               
