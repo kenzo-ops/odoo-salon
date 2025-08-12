@@ -13,6 +13,7 @@
     <menuitem id="salon_management" name="Management" sequence="5" parent="salon_service_root"/>
     <menuitem id="salon_management_branch" name="Branch Office" parent="salon_management" action="salon_branches_action"/>
     <menuitem id="salon_manager_branch" name="Branch Manager" parent="salon_management" action="hr_employee_branch_manager_action"/>
+    <menuitem id="salon_staff_branch" name="Staff" parent="salon_management" action="hr_employee_branch_action"/>
     
     <menuitem id="salon_service" name="Service" parent="salon_service_root" sequence="6"/>
     <menuitem id="salon_services" name="Service List" parent="salon_service" action="salon_services_action"/>

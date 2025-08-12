@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Sub Kategori">
                     <field name="name" />
+                    <field name="branch_staff_ids" widget="many2many_tags" options="{'no_create': True}" string="Staff" />
                     <field name="country_id" />
                     <field name="state_id" />
                     <field name="address" />
@@ -49,14 +50,21 @@
                     </group>
                     <notebook>
                         <page string="Branch Services">
-                            <field name="service_id" options="{'no_create': True}">
+                            <field name="service_available_id" options="{'no_create': True}">
                                 <list editable="bottom">
-                                <field name="name"/>
-                                <field name="description" readonly="1"/>
-                                <field name="category" readonly="1"/>
-                                <field name="duration" readonly="1"/>
-                                <field name="harga" readonly="1"/>
+                                <field name="service_id"/>
+                                <field name="service_description" readonly="1"/>
+                                <field name="service_category" readonly="1"/>
+                                <field name="service_duration" readonly="1"/>
+                                <field name="service_price" readonly="1"/>
                                 </list>
+                            </field>
+                        </page>
+                        <page string="Staffs">
+                            <field name="branch_staff_ids" string="Staffs">
+                            <list editable="bottom">
+                                <field name="branch_staff_ids" />
+                            </list>
                             </field>
                         </page>
                     </notebook>

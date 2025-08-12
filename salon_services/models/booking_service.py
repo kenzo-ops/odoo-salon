@@ -4,6 +4,7 @@ class BookingService(models.Model):
     _name = "salon.booking.service"
     _description = "Salon Booking Service"
 
+    branch_id = fields.Many2one("salon.branches")
     booking_id = fields.Many2one("salon.booking")
     service_id = fields.Many2one("salon.services")
     service_description = fields.Char(related='service_id.description', string="Description", readonly=True)

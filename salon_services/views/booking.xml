@@ -69,6 +69,8 @@
                     <field name="customer_email"/>
                     </group>
                     <group string="Booking Information">
+                    <field name="branch_id" />
+                    <field name="staff_id" domain="[('branch_id', '=', branch_id), ('branch_staff_ids.job_id.name', '=', 'Staff')]"/>
                     <field name="booking_date" />
                     <field name="end_date" />
                     <field name="total_price" />

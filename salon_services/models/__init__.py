@@ -1,1 +1,1 @@
-from . import services, category, sub_category, packages, package_service, branches, branches_manager, booking, customer, hr_employee, booking_service, booking_package
+from . import services, category, sub_category, packages, package_service, branches, branches_manager, booking, customer, hr_employee, booking_service, booking_package, staff

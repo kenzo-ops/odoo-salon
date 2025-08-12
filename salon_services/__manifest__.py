@@ -4,7 +4,7 @@
     Modul untuk mengatur manajemen dan jalan usaha salon
     """,
     'author' : "Tim IT Salon",
-    'depends' : ['base', 'hr', 'calendar', 'mail'],
+    'depends' : ['base', 'hr', 'calendar', 'mail', 'product', 'account'],
     'data' : [
         "views/services.xml",
         "views/sub_category.xml",
@@ -15,6 +15,7 @@
         "views/booking.xml",
         "views/customer.xml",
         "views/calendar.xml",
+        "views/staff.xml",
         "views/dashboard.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",
