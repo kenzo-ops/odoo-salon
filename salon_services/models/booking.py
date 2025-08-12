@@ -10,7 +10,7 @@ class SalonBooking(models.Model):
     booking_id = fields.Char(string="Booking Number", default="New", readonly=True)
     customer = fields.Many2one("res.partner", string="Customer")
     customer_number = fields.Char(related="customer.phone", string="Phone Number", readonly=True)
-    customer_address = fields.Char(related="customer.street", string="Adress", readonly=True)
+    customer_address = fields.Char(related="customer.street", string="Address", readonly=True)
     customer_email = fields.Char(related="customer.email", string="Email", readonly=True)
     booking_date = fields.Datetime(string="Booking Schedule")
     end_date = fields.Datetime(string="Finish Time", compute="_compute_end_date", store=True, readonly=True)
@@ -36,10 +36,7 @@ class SalonBooking(models.Model):
     def _compute_end_date(self):
         for rec in self:
             if rec.booking_date and rec.service_booking_id:
-                total_duration = sum(
-                    service.service_duration or 0
-                    for service in rec.service_booking_id
-                )
+                total_duration = sum(service.service_duration or 0 for service in rec.service_booking_id)
                 rec.end_date = rec.booking_date + timedelta(minutes=total_duration)
             else:
                 rec.end_date = False
@@ -53,6 +50,12 @@ class SalonBooking(models.Model):
 
     def action_konfirmasi(self):
         self.write({"state": "konfirmasi"})
+        for rec in self:
+            if rec.invoice_id:
+                if rec.invoice_id.state == 'draft':
+                    rec.invoice_id.action_post()
+            else:
+                rec._create_invoice()
 
     def action_checkin(self):
         self.write({"state": "checkin"})
@@ -62,12 +65,14 @@ class SalonBooking(models.Model):
 
     def action_batal(self):
         self.write({"state": "batal"})
+        for rec in self:
+            if rec.invoice_id and rec.invoice_id.state == 'posted':
+                rec.invoice_id.button_cancel()
 
     def action_draft(self):
         self.write({"state": "draft"})
-        # Kembalikan invoice ke draft jika ada
         for rec in self:
-            if rec.invoice_id and rec.invoice_id.state != 'draft':
+            if rec.invoice_id and rec.invoice_id.state == 'posted':
                 rec.invoice_id.button_draft()
 
     def _create_invoice(self):
@@ -77,19 +82,15 @@ class SalonBooking(models.Model):
                 raise ValueError("Customer belum dipilih, tidak bisa membuat invoice.")
 
             if rec.invoice_id:
-                continue  # sudah ada invoice, skip
+                return
 
             invoice_lines = []
-
-            # Tambah services
             for service in rec.service_booking_id:
                 invoice_lines.append((0, 0, {
                     'name': service.service_id.name or 'Service',
                     'quantity': 1,
                     'price_unit': service.service_price or 0,
                 }))
-
-            # Tambah packages
             for package in rec.package_booking_id:
                 invoice_lines.append((0, 0, {
                     'name': package.package_name or 'Package',
@@ -105,17 +106,11 @@ class SalonBooking(models.Model):
                 'invoice_line_ids': invoice_lines
             }
             invoice = self.env['account.move'].create(move_vals)
-            invoice.action_post()  # langsung posting
+            invoice.action_post()
             rec.invoice_id = invoice.id
 
     @api.model
     def create(self, vals):
-        # Generate booking number
         if vals.get('booking_id', 'New') == 'New':
             vals['booking_id'] = self.env['ir.sequence'].next_by_code('salon.booking') or 'New'
-        record = super(SalonBooking, self).create(vals)
-
-        # Buat invoice langsung setelah booking dibuat
-        record._create_invoice()
-
-        return record
+        return super(SalonBooking, self).create(vals)
