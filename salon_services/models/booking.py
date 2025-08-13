@@ -32,7 +32,11 @@ class SalonBooking(models.Model):
     branch_id = fields.Many2one("salon.branches", string="Branch Offices")
     service_booking_id = fields.One2many("salon.booking.service", "booking_id", string="Services")
     package_booking_id = fields.One2many("salon.booking.package", "booking_id", string="Packages")
-
+    calendar_info = fields.Char(
+        string="Calendar Info",
+        compute="_compute_calendar_info",
+        store=True
+    )
 
     @api.onchange('branch_id')
     def _onchange_branch_id(self):
@@ -51,6 +55,14 @@ class SalonBooking(models.Model):
                     'staff_id': []
                 }
             }
+
+    @api.depends('booking_id', 'customer', 'customer.name', 'service_booking_id.service_id.name')
+    def _compute_calendar_info(self):
+        for rec in self:
+            service_list = rec.service_booking_id.mapped('service_id.name')
+            services_str = ', '.join(service_list) if service_list else 'No Service'
+            customer_name = rec.customer.name or 'No Customer'
+            rec.calendar_info = f"{rec.booking_id} - {customer_name} - {services_str}"
 
     @api.depends('booking_date', 'service_booking_id.service_duration')
     def _compute_end_date(self):

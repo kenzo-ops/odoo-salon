@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_salon_booking_calendar" model="ir.ui.view">
-    <field name="name">Salon Booking Calendar</field>
-    <field name="model">salon.booking</field>
-    <field name="arch" type="xml">
-        <calendar string="Salon Booking Schedule" date_start="booking_date" color="customer">
-            <field name="booking_id"/>
-            <field name="customer"/>
-        </calendar>
-    </field>
+        <record id="view_salon_booking_calendar" model="ir.ui.view">
+        <field name="name">Salon Booking Calendar</field>
+        <field name="model">salon.booking</field>
+        <field name="arch" type="xml">
+            <calendar string="Salon Booking Schedule"
+                    date_start="booking_date"
+                    color="customer">
+                <field name="calendar_info"/>
+            </calendar>
+        </field>
     </record>
+
 
     <record id="salon_booking_calendar" model="ir.actions.act_window">
         <field name="name">Salon Calendar</field>
