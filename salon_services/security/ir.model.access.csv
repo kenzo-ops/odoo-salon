@@ -7,6 +7,7 @@ access_salon_package_service,access_salon_package_service,model_salon_package_se
 
 access_salon_branches,access_salon_branches,model_salon_branches,,1,1,1,1
 access_salon_branch_manager,access_salon_branch_manager,model_salon_branch_manager,,1,1,1,1
+access_salon_staff,access_salon_staff,model_salon_staff,,1,1,1,1
 
 access_salon_bookings,access_salon_bookings,model_salon_booking,,1,1,1,1
 access_salon_booking_service,access_salon_booking_service,model_salon_booking_service,,1,1,1,1

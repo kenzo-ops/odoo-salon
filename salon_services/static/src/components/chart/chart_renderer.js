@@ -25,7 +25,7 @@ export class ServiceChart extends Component {
         }
     }
 
-    /** 1. Chart Status Layanan **/
+    
     async fetchServiceStatusChart() {
         const records = await this.env.services.orm.searchRead(
             "salon.services",
@@ -45,7 +45,7 @@ export class ServiceChart extends Component {
         );
     }
 
-    /** 2. Chart Tren Booking **/
+    
     async fetchBookingTrendChart() {
         const records = await this.env.services.orm.searchRead(
             "salon.booking",
@@ -69,7 +69,7 @@ export class ServiceChart extends Component {
         await this.renderChart(labels, values, "Tren Booking");
     }
 
-    /** 3. Chart Top Services **/
+   
     async fetchBookingStatusChart() {
         const records = await this.env.services.orm.searchRead(
             "salon.booking",
@@ -77,7 +77,7 @@ export class ServiceChart extends Component {
             ["state"]
         );
     
-        // Hitung jumlah per status
+        
         const statusCounts = {
             draft: 0,
             konfirmasi: 0,

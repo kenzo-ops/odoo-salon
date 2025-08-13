@@ -15,6 +15,7 @@
         "views/booking.xml",
         "views/customer.xml",
         "views/calendar.xml",
+        "views/staff.xml",
         "views/dashboard.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",

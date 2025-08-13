@@ -28,6 +28,12 @@ class Branches(models.Model):
     )
 
     service_id = fields.One2many('salon.services', 'branch_id', string="Available Branch Services")
+    service_available_id = fields.One2many('salon.booking.service', 'branch_id', string="Available Branch Services")
+    branch_staff_ids = fields.One2many(
+        "salon.staff", "branch_id",
+        string="Branch Staff",
+        domain=[('job_id.name', '=', 'Staff')]
+    )
 
 
     @api.onchange('status')
