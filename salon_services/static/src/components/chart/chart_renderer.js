@@ -9,7 +9,14 @@ import {
 } from "@odoo/owl";
 
 export class ServiceChart extends Component {
-  static props = ["width", "type", "isDarkMode", "title", "chartMode"];
+  static props = [
+    "width",
+    "type",
+    "isDarkMode",
+    "title",
+    "chartMode",
+    "className",
+  ];
   static template = "owl.ServiceChart";
 
   setup() {
@@ -213,7 +220,13 @@ export class ServiceChart extends Component {
           this.props.type === "bar" || this.props.type === "line"
             ? {
                 x: { ticks: { color: textColor } },
-                y: { ticks: { color: textColor } },
+                y: {
+                  ticks: {
+                    color: textColor,
+                    precision: 0, // memaksa angka bulat
+                    stepSize: 1, // interval tick 1
+                  },
+                },
               }
             : {},
       },
