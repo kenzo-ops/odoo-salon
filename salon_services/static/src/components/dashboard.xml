@@ -1,47 +1,95 @@
 <templates xml:space="preserve">
 	<t t-name="owl.OwlServiceDashboard" owl="1">
-		<div class="p-3 gap-3 bg-body d-flex flex-column w-100 salon-dashboard-container">
-			
-			<!-- Header Dashboard -->
-			<div class="d-flex w-100 justify-content-between align-items-center my-3">
-				<h1 class="fw-bold m-0">Salon Dashboard</h1>
-				<div class="bg-selector p-1 rounded d-flex align-items-center gap-3" style="border-radius : 13px;">
-					<input type="date" class="form-control fw-bold border bg-white rounded" style="width: 160px;" title="Pilih Tanggal" />
-					<select class="form-select border bg-white rounded fw-bold" style="width: 125px;">
-						<option value="today">Hari Ini</option>
-						<option value="yesterday">Kemarin</option>
-						<option value="this_week">Minggu Ini</option>
-						<option value="last_week">Minggu Lalu</option>
-						<option value="this_month">Bulan Ini</option>
-						<option value="last_month">Bulan Lalu</option>
-						<option value="this_year">Tahun Ini</option>
-						<option value="last_year">Tahun Lalu</option>
-					</select>
-					<div class="d-flex align-items-center text-muted" title="Auto-refresh setiap 5 detik">
-						<div style="background-color: #ffffff; padding: 6px; border-radius: 5px;" class="border">
-							<img t-att-src="'/salon_services/static/src/img/wall-clock.png'" alt="Clock Icon" style="width: 18px; height: 18px; cursor: pointer;" />
-						</div>
+		<div class="p-4 bg-body w-100 salon-dashboard-container">
+			<!-- Overlay loading fullscreen -->
+			<t t-if="state.isLoading">
+				<div class="dashboard-loading-overlay">
+					<div class="spinner">
+					</div>
+				</div>
+			</t>
+			<!-- Header -->
+			<div class="row align-items-center mb-4">
+				<div class="col-12 col-lg-6">
+					<h1 class="fw-bold m-0">
+						Salon Dashboard
+					</h1>
+				</div>
+				<div class="col-12 col-lg-6 mt-3 mt-lg-0 d-flex flex-wrap align-items-center gap-2 justify-content-lg-end">
+					<div class="bg-white border rounded p-1 d-flex align-items-center">
+						<select class="form-select border-0 fw-bold bg-transparent text-dark w-auto" style="max-width: 150px;">
+							<option value="today">
+								Hari Ini
+							</option>
+							<option value="yesterday">
+								Kemarin
+							</option>
+							<option value="this_week">
+								Minggu Ini
+							</option>
+							<option value="last_week">
+								Minggu Lalu
+							</option>
+							<option value="this_month">
+								Bulan Ini
+							</option>
+							<option value="last_month">
+								Bulan Lalu
+							</option>
+							<option value="this_year">
+								Tahun Ini
+							</option>
+							<option value="last_year">
+								Tahun Lalu
+							</option>
+						</select>
+					</div>
+					<div class="bg-white border rounded p-2 d-flex align-items-center justify-content-center" style="cursor: pointer; width: 40px; height: 40px;" t-on-click="toggleAutoRefresh">
+						<t t-if="!state.autoRefresh">
+							<img t-att-src="'/salon_services/static/src/img/wall-clock.png'" alt="Clock" style="width: 23px; height: 23px;" />
+						</t>
+						<t t-else="">
+							<span class="fw-bold text-primary" t-esc="state.countdown">
+							</span>
+						</t>
 					</div>
 				</div>
 			</div>
-
-			<div class="d-flex flex-row gap-3 w-100">
-				<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'" title="'Total Services'" model="'salon.services'" clickable="true" />
-				<ServiceKpiCard img="'/salon_services/static/src/img/services.png'" title="'Total Bookings'" model="'salon.booking'" clickable="true" />
-				<ServiceKpiCard img="'/salon_services/static/src/img/bundle.png'" title="'Package Promo'" model="'salon.packages'" clickable="true" />
+			<!-- KPI Cards -->
+			<div class="row g-4" t-att-class="props.className">
+				<div class="col-12 col-sm-6 col-lg-4">
+					<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'" title="'Total Services'" model="'salon.services'" clickable="true" className="bg-primary-kpi" />
+				</div>
+				<div class="col-12 col-sm-6 col-lg-4">
+					<ServiceKpiCard img="'/salon_services/static/src/img/services.png'" title="'Total Bookings'" model="'salon.booking'" clickable="true" className="bg-primary-kpi" />
+				</div>
+				<div class="col-12 col-sm-6 col-lg-4">
+					<ServiceKpiCard img="'/salon_services/static/src/img/bundle.png'" title="'Package Promo'" model="'salon.packages'" clickable="true" className="bg-primary-kpi" />
+				</div>
 			</div>
-
-			<div class="d-flex w-100 bg-body gap-3">
-				<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Total Service Status'" chartMode="'service_status'"/>
-				<ServiceChart width="'w-50'" type="'line'" isDarkMode="false" title="'Booking Trends'" chartMode="'booking_trend'"/>
-				<ServiceChart width="'w-25'" type="'pie'" isDarkMode="false" title="'Top Booking Status'" chartMode="'booking_status'"/>
+			<!-- Charts Row 1 -->
+			<div class="row g-4 mt-1" t-att-class="props.className">
+				<div class="col-12 col-lg-6">
+					<ServiceChart type="'bar'" width="w-100" isDarkMode="false" title="'Total Service Status'" chartMode="'service_status'" className="bg-primary-chart" />
+				</div>
+				<div class="col-12 col-lg-6">
+					<ServiceChart type="'line'" width="w-100" isDarkMode="false" title="'Booking Trends'" chartMode="'booking_trend'" className="bg-primary-chart" />
+				</div>
 			</div>
-
-			<div class="mt-4">
-				<h2 class="fw-bold mb-4">Booking List</h2>
-				<ListBookingTable/>
+			<!-- Row 2 -->
+			<div class="row g-4 mt-4">
+				<div class="col-12 col-lg-4">
+					<ServiceChart type="'pie'" width="w-25" isDarkMode="false" title="'Top Booking Status'" chartMode="'booking_status'" className="bg-primary-chart" />
+				</div>
+				<div class="col-12 col-lg-8">
+					<h2 class="fw-bold mb-3">
+						Booking List
+					</h2>
+					<div class="table-responsive">
+						<ListBookingTable />
+					</div>
+				</div>
 			</div>
-
 		</div>
 	</t>
 </templates>

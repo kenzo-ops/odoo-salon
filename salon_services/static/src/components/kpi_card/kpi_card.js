@@ -4,7 +4,7 @@ import { Component, useState, onWillStart } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
 export class ServiceKpiCard extends Component {
-  static props = ["img", "title", "model", "clickable"];
+  static props = ["img", "title", "model", "clickable", "className"];
 
   setup() {
     this.orm = useService("orm");
