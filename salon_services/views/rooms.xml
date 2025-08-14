@@ -1,0 +1,50 @@
+<odoo>
+ <data>
+
+    <record id="view_salon_rooms_list" model="ir.ui.view">
+            <field name="name">List of Rooms</field>
+            <field name="model">salon.room</field>
+            <field name="type">list</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Rooms">
+                    <field name="name" />
+                    <field name="branch_id" widget="many2many_tags" options="{'no_create': True}" string="Staff"/>
+                </list>
+            </field>
+        </record>
+
+    <record id="view_salon_rooms_form" model="ir.ui.view">
+            <field name="name">Rooms Form</field>
+            <field name="model">salon.room</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Rooms">
+                <group>
+                    <field name="name" />
+                    <notebook>
+                        <page string="Branch Office">
+                            <field name="branch_id" readonly="1">
+                            <list editable="bottom">
+                                <field name="branch_id" />
+                            </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </group>
+                </form>
+            </field>
+        </record>
+ 
+    <record id="salon_rooms_action" model="ir.actions.act_window">
+                <field name="name">Rooms</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">salon.room</field>
+                <field name="view_mode">list,form</field>
+    </record>
+
+
+ </data>
+ 
+</odoo>

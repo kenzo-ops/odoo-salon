@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 class Services(models.Model):
     _name = "salon.services"
@@ -25,6 +26,14 @@ class Services(models.Model):
     branch_id = fields.Many2one("salon.branches", string="Branches")
     booking_id = fields.Many2one("salon.booking")
 
+
+    @api.constrains('category')
+    def _check_category_active(self):
+        for rec in self:
+            if rec.category and rec.category.state != 'active':
+                raise ValidationError(_(
+                    "Category '%s' cannot be selected because its status is not 'Active'."
+                ) % rec.category.name)
 
     @api.onchange('status')
     def _onchange_status(self):

@@ -18,6 +18,10 @@
     <menuitem id="salon_service" name="Service" parent="salon_service_root" sequence="6"/>
     <menuitem id="salon_services" name="Service List" parent="salon_service" action="salon_services_action"/>
     <menuitem id="salon_packages" name="Service Package" parent="salon_service" action="salon_packages_action"/>
+
     <menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="7"/>
+    <menuitem id="salon_rooms" name="Rooms" parent="salon_master_data" sequence="10" action="salon_rooms_action"/>
+    <menuitem id="salon_working_hours" name="Working Hours" parent="salon_master_data" sequence="11" action="salon_working_hours_action"/>
   </data>
 </odoo>
+

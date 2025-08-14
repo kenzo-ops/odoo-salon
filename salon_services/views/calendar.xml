@@ -5,8 +5,8 @@
     <field name="model">salon.booking</field>
     <field name="arch" type="xml">
         <calendar string="Salon Booking Schedule" date_start="booking_date" color="customer">
-            <field name="booking_id"/>
             <field name="customer"/>
+            <field name="booking_id"/>
         </calendar>
     </field>
     </record>

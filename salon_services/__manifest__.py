@@ -16,6 +16,8 @@
         "views/customer.xml",
         "views/calendar.xml",
         "views/staff.xml",
+        "views/rooms.xml",
+        "views/working_hours.xml",
         "views/dashboard.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",
@@ -26,7 +28,8 @@
         "salon_services/static/src/components/**/*.js",
         "salon_services/static/src/components/**/*.xml",
         "salon_services/static/src/scss/**/*.scss",
-        "salon_services/static/src/img/**/*.png"
+        "salon_services/static/src/img/**/*.png",
+        'salon_sevrice/static/src/js/working_hours_datetime.js',
         ]
     },
     'application' : True,

@@ -3,6 +3,8 @@ from odoo import fields, models, api
 class Branches(models.Model):
     _name = "salon.branches"
     _description = "Cabang Salon"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _rec_name = "name"
 
     name = fields.Char(string="Branch Name", required=True)
     telephone_number = fields.Char(string="Phone number", required=True)
@@ -19,7 +21,8 @@ class Branches(models.Model):
         ],
         string="Status",
         default="inactive"
-    )    
+    )
+    
 
     manager_id = fields.Many2one(
         "hr.employee",
@@ -27,6 +30,7 @@ class Branches(models.Model):
         domain="[('job_id.name', 'ilike', 'Manager Cabang')]"
     )
 
+    room_id = fields.One2many('salon.branch.room', 'branch_id', string="Branch Office Rooms")
     service_id = fields.One2many('salon.services', 'branch_id', string="Available Branch Services")
     service_available_id = fields.One2many('salon.booking.service', 'branch_id', string="Available Branch Services")
     branch_staff_ids = fields.One2many(
@@ -34,6 +38,8 @@ class Branches(models.Model):
         string="Branch Staff",
         domain=[('job_id.name', '=', 'Staff')]
     )
+    
+    working_hours_id = fields.Many2one("salon.working.hour", string="Working Hours")
 
 
     @api.onchange('status')

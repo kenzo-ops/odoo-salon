@@ -1,0 +1,45 @@
+<odoo>
+ <data>
+
+    <record id="view_salon_working_hours_list" model="ir.ui.view">
+            <field name="name">List of Working Hours</field>
+            <field name="model">salon.working.hour</field>
+            <field name="type">list</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Sub Kategori">
+                    <field name="name" />
+                    <field name="working_start"/>
+                    <field name="working_end"/>
+                </list>
+            </field>
+        </record>
+
+    <record id="view_salon_working_hours_form" model="ir.ui.view">
+            <field name="name">Working Hours Form</field>
+            <field name="model">salon.working.hour</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Working Hours">
+                    <sheet>
+                    <group>
+                    <field name="name" />
+                    <field name="working_start" widget="float_time"/>
+                    <field name="working_end" widget="float_time"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+ 
+    <record id="salon_working_hours_action" model="ir.actions.act_window">
+                <field name="name">Working Hours</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">salon.working.hour</field>
+                <field name="view_mode">list,form</field>
+    </record>
+
+ </data>
+ 
+</odoo>

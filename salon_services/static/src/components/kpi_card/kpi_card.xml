@@ -1,6 +1,8 @@
 <templates xml:space="preserve">
   <t t-name="owl.ServiceKpiCard" owl="1">
-    <div class="d-flex bg-white w-100 border border-2" style="height: 120px; border-radius: 10px;">
+    <div class="d-flex bg-white w-100 border border-2" 
+         style="height: 120px; border-radius: 10px; cursor: pointer;"
+         t-on-click="openListView">
       <div class="p-3 w-100">
         <h2 class="fw-bold"><t t-esc="props.title"/></h2>
         <h1 class="fw-bold display-6">

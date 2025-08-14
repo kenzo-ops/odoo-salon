@@ -2,14 +2,18 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_salon_services,access_salon_services,model_salon_services,,1,1,1,1
 access_salon_service_category,access_salon_service_category,model_salon_service_category,,1,1,1,1
 access_salon_sub_category,access_salon_sub_category,model_salon_sub_category,,1,1,1,1
+access_salon_room,access_salon_room,model_salon_room,,1,1,1,1
 access_salon_packages,access_salon_packages,model_salon_packages,,1,1,1,1
 access_salon_package_service,access_salon_package_service,model_salon_package_service,,1,1,1,1
 
 access_salon_branches,access_salon_branches,model_salon_branches,,1,1,1,1
 access_salon_branch_manager,access_salon_branch_manager,model_salon_branch_manager,,1,1,1,1
+access_salon_branch_room,access_salon_branch_room,model_salon_branch_room,,1,1,1,1
 access_salon_staff,access_salon_staff,model_salon_staff,,1,1,1,1
+access_salon_working_hour,access_salon_working_hour,model_salon_working_hour,,1,1,1,1
 
 access_salon_bookings,access_salon_bookings,model_salon_booking,,1,1,1,1
 access_salon_booking_service,access_salon_booking_service,model_salon_booking_service,,1,1,1,1
 access_salon_booking_package,access_salon_booking_package,model_salon_booking_package,,1,1,1,1
-access_salon_customer_booking,access_salon_customer_booking,model_salon_customer_booking,,1,1,1,1
+access_salon_customer_booking,access_salon_customer_booking,model_salon_customer_booking,,1,0,0,0
+
