@@ -18,7 +18,7 @@ class SubCategory(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default="inactive"
+        default="active"
     )
 
     product_sub_category_id = fields.Many2one(

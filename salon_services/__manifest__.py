@@ -19,6 +19,7 @@
         "views/rooms.xml",
         "views/working_hours.xml",
         "views/dashboard.xml",
+        "views/doctor.xml",
         "views/menu.xml",
         "security/ir.model.access.csv",
         "data/ir.sequence.xml",

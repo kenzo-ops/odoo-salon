@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+    <record id="hr_employee_branch_doctor_action" model="ir.actions.act_window">
+        <field name="name">Branch Doctor</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_doctor', '=', True)]</field>
+    </record>
+
+
+    </data>
+</odoo>

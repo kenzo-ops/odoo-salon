@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Sub Kategori">
                     <field name="name" />
+                    <field name="duration" />
                     <field name="start_date" />
                     <field name="end_date" />
                     <field name="state" widget="badge"
@@ -20,7 +21,7 @@
         </record>
 
     <record id="view_salon_package_form" model="ir.ui.view">
-            <field name="name">Form Paket Salon</field>
+            <field name="name">Package</field>
             <field name="model">salon.packages</field>
             <field name="type">form</field>
             <field name="priority" eval="8"/>
@@ -36,6 +37,7 @@
                     <group string="Basic Information">
                     <field name="name"/>
                     <field name="description"/>
+                    <field name="duration"/>
                     <field name="status" widget="boolean_toggle"/>
                     </group>
                     <group string="Effective date">
@@ -59,7 +61,7 @@
         </record>
  
     <record id="salon_packages_action" model="ir.actions.act_window">
-                <field name="name">Salon Package</field>
+                <field name="name">Package</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.packages</field>
                 <field name="view_mode">list,form</field>

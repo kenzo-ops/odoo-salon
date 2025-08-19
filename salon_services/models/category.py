@@ -13,7 +13,7 @@ class ServiceCategory(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default = "inactive"
+        default = "active"
         )
     product_category_id = fields.Many2one(
         'product.category',

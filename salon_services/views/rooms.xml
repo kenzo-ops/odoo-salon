@@ -10,6 +10,9 @@
                 <list string="Rooms">
                     <field name="name" />
                     <field name="branch_id" widget="many2many_tags" options="{'no_create': True}" string="Staff"/>
+                    <field name="state" widget="badge"
+                    decoration-danger="state=='inactive'"
+                    decoration-success="state=='active'"/>
                 </list>
             </field>
         </record>
@@ -21,8 +24,15 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <form string="Rooms">
+                <header>
+                        <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="inactive,active" />
+                </header>
+                <sheet>
                 <group>
                     <field name="name" />
+                    <field name="status" widget="boolean_toggle"/>
                     <notebook>
                         <page string="Branch Office">
                             <field name="branch_id" readonly="1">
@@ -33,6 +43,7 @@
                         </page>
                     </notebook>
                 </group>
+                </sheet>
                 </form>
             </field>
         </record>

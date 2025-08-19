@@ -18,7 +18,7 @@ class Services(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default="inactive"
+        default="active"
     )
 
     product_id = fields.Many2one('product.template', string="Related Products", readonly=True)

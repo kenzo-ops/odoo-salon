@@ -54,7 +54,7 @@
         </record>
 
         <record id="salon_services_action" model="ir.actions.act_window">
-                <field name="name">Salon Services</field>
+                <field name="name">Services</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.services</field>
                 <field name="view_mode">list,form</field>

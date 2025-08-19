@@ -20,7 +20,7 @@ class Branches(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default="inactive"
+        default="active"
     )
     
 

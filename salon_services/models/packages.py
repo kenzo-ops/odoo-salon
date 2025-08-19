@@ -13,14 +13,21 @@ class Packages(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default = "inactive"
+        default = "active"
         )
     start_date = fields.Date(string="Effective date", required=True)
     end_date = fields.Date(string="End Date", required=True)
     total_price = fields.Float(string="Total Package Price", compute="_compute_total_package_price", store=True, readonly=True)
+    duration = fields.Integer(string="Total Duration (Minutes)",compute="_compute_total_duration",store=True,readonly=True)
 
     booking_id = fields.Many2one("salon.booking")
     package_service_id = fields.One2many('salon.package.service','packages_id',string="Service",required=True)
+
+    @api.depends('package_service_id.service_id.duration')
+    def _compute_total_duration(self):
+        for rec in self:
+            rec.duration = sum(line.service_id.duration for line in rec.package_service_id if line.service_id)
+
 
     @api.depends('package_service_id.total_price')
     def _compute_total_package_price(self):

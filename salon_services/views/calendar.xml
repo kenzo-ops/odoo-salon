@@ -12,7 +12,7 @@
     </record>
 
     <record id="salon_booking_calendar" model="ir.actions.act_window">
-        <field name="name">Salon Calendar</field>
+        <field name="name">Calendar</field>
         <field name="res_model">salon.booking</field>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="view_salon_booking_calendar"/>

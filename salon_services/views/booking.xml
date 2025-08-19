@@ -107,6 +107,7 @@
                           <field name="package_state" widget="badge"
                     decoration-danger="package_state=='inactive'"
                     decoration-success="package_state=='active'" />
+                          <field name="package_duration" />
                           <field name="package_total_price" />
                           <field name="package_start_date" />
                           <field name="package_end_date" />
@@ -128,7 +129,7 @@
         </record>
 
         <record id="salon_booking_action" model="ir.actions.act_window">
-                <field name="name">Salon Booking List</field>
+                <field name="name">Booking List</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.booking</field>
                 <field name="view_mode">list,form</field>

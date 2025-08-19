@@ -14,7 +14,7 @@ class SalonBooking(models.Model):
     customer_number = fields.Char(related="customer.phone", string="Phone Number", readonly=True)
     customer_address = fields.Char(related="customer.street", string="Adress", readonly=True)
     customer_email = fields.Char(related="customer.email", string="Email", readonly=True)
-    booking_date = fields.Datetime(string="Booking Schedule")
+    booking_date = fields.Datetime(string="Booking Schedule", required=True)
     end_date = fields.Datetime(string="Finish Time", compute="_compute_end_date", store=True, readonly=True)
     state = fields.Selection(
         selection=[
@@ -38,52 +38,102 @@ class SalonBooking(models.Model):
 
     working_hours = fields.Many2one(related='branch_id.working_hours_id', string="Working Hours")
 
-    @api.constrains('booking_date', 'branch_id')
-    def _check_booking_time_in_working_hours(self):
-        for rec in self:
-            if rec.branch_id and rec.branch_id.working_hours_id and rec.booking_date:
-                wh = rec.branch_id.working_hours_id
+    @api.onchange('staff_id', 'booking_date')
+    def _onchange_staff_schedule_check(self):
+        if self.staff_id and self.booking_date:
+            employee = self.staff_id.branch_staff_ids
+            if not employee or not employee.resource_calendar_id:
+                return
 
-                # Convert booking_date ke jam float sesuai timezone user
-                booking_dt = fields.Datetime.context_timestamp(rec, rec.booking_date)
-                booking_hour = booking_dt.hour + booking_dt.minute / 60.0
+            calendar = employee.resource_calendar_id
+            booking_local = fields.Datetime.context_timestamp(self, self.booking_date)
+            weekday = str(booking_local.weekday())
+            attendances = calendar.attendance_ids.filtered(lambda a: a.dayofweek == weekday)
 
-                if booking_hour < wh.working_start or booking_hour > wh.working_end:
-                    raise ValidationError(
-                        f"Booking hours must be between {int(wh.working_start):02d}:"
-                        f"{int((wh.working_start % 1) * 60):02d} and "
-                        f"{int(wh.working_end):02d}:"
-                        f"{int((wh.working_end % 1) * 60):02d}"
-                    )
+            if not attendances:
+                return {
+                    'warning': {
+                        'title': "Not Working",
+                        'message': f"{employee.name} not working on {booking_local.strftime('%A')}."
+                    }
+                }
+
+            booking_hour = booking_local.hour + booking_local.minute / 60.0
+            valid = False
+            for att in attendances:
+                if att.hour_from <= booking_hour <= att.hour_to:
+                    valid = True
+                    break
+
+            if not valid:
+                hour_list = ", ".join([
+                    f"{int(a.hour_from):02d}:{int((a.hour_from % 1) * 60):02d} - "
+                    f"{int(a.hour_to):02d}:{int((a.hour_to % 1) * 60):02d}"
+                    for a in attendances
+                ])
+                self.booking_date = False
+                return {
+                    'warning': {
+                        'title': "Outside Working Hours",
+                        'message': f"Booking hours must be between {hour_list} for {employee.name}."
+                    }
+                }
 
     @api.onchange('booking_date', 'branch_id')
     def _onchange_booking_date_check_hours(self):
+        """Cek booking sesuai jam operasional cabang."""
         if self.branch_id and self.branch_id.working_hours_id and self.booking_date:
             wh = self.branch_id.working_hours_id
             booking_dt = fields.Datetime.context_timestamp(self, self.booking_date)
             booking_hour = booking_dt.hour + booking_dt.minute / 60.0
             if booking_hour < wh.working_start or booking_hour > wh.working_end:
-                warning_msg = (f"Booking hours must be between {int(wh.working_start):02d}:"
-                               f"{int((wh.working_start % 1) * 60):02d} and "
-                               f"{int(wh.working_end):02d}:"
-                               f"{int((wh.working_end % 1) * 60):02d}")
                 self.booking_date = False
                 return {
                     'warning': {
                         'title': "Invalid Booking Time",
-                        'message': warning_msg
+                        'message': (f"Booking must be between {int(wh.working_start):02d}:"
+                                    f"{int((wh.working_start % 1) * 60):02d} and "
+                                    f"{int(wh.working_end):02d}:"
+                                    f"{int((wh.working_end % 1) * 60):02d}")
                     }
                 }
 
-    @api.depends('booking_date', 'service_booking_id.service_duration')
+    @api.onchange('staff_id', 'booking_date')
+    def _onchange_staff_leave_check(self):
+        """Cek apakah staff sedang cuti di tanggal booking."""
+        if self.staff_id and self.booking_date:
+            employee = self.staff_id.branch_staff_ids
+            if employee:
+                leave_exists = self.env['hr.leave'].search_count([
+                    ('employee_id', '=', employee.id),
+                    ('state', '=', 'validate'),
+                    ('request_date_from', '<=', self.booking_date.date()),
+                    ('request_date_to', '>=', self.booking_date.date()),
+                ]) > 0
+                if leave_exists:
+                    self.staff_id = False
+                    return {
+                        'warning': {
+                            'title': "Staff on Leave",
+                            'message': f"Staff {employee.name} sedang cuti pada {self.booking_date.date()}."
+                        }
+                    }
+
+    @api.depends('booking_date','service_booking_id.service_duration','package_booking_id.package_duration')
     def _compute_end_date(self):
         for rec in self:
-            if rec.booking_date and rec.service_booking_id:
-                total_duration = sum(
-                    service.service_duration or 0
-                    for service in rec.service_booking_id
-                )
-                rec.end_date = rec.booking_date + timedelta(minutes=total_duration)
+            if rec.booking_date:
+                total_duration = 0
+
+                # Tambahkan total durasi service
+                if rec.service_booking_id:
+                    total_duration += sum(service.service_duration or 0 for service in rec.service_booking_id)
+
+                # Tambahkan total durasi package
+                if rec.package_booking_id:
+                    total_duration += sum(pkg.package_duration or 0 for pkg in rec.package_booking_id)
+
+                rec.end_date = rec.booking_date + timedelta(minutes=total_duration) if total_duration > 0 else False
             else:
                 rec.end_date = False
 
@@ -116,7 +166,12 @@ class SalonBooking(models.Model):
         """Buat invoice otomatis dari layanan & paket booking."""
         for rec in self:
             if not rec.customer:
-                raise ValidationError("Customer has not been selected, cannot create invoice.")
+                return {
+                        'warning': {
+                            'title': "Customer has not been selected",
+                            'message': f"Customer has not been selected, cannot create invoice."
+                        }
+                    }
 
             if rec.invoice_id:
                 continue  # sudah ada invoice, skip
@@ -198,9 +253,12 @@ class SalonBooking(models.Model):
                 ]) > 0
 
                 if leave_exists:
-                    raise ValidationError(
-                        f"Staff {employee.name} is on leave on {rec.booking_date.date()}"
-                    )
+                    return {
+                        'warning': {
+                            'title': "Staff is on leave",
+                            'message': f"Staff {employee.name} is on leave on {rec.booking_date.date()}"
+                        }
+                    }
 
     @api.onchange('staff_id', 'booking_date')
     def _onchange_staff_leave_check(self):
