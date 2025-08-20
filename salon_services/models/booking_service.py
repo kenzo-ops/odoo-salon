@@ -5,8 +5,8 @@ class BookingService(models.Model):
     _description = "Salon Booking Service"
 
     branch_id = fields.Many2one("salon.branches")
-    booking_id = fields.Many2one("salon.booking")
-    service_id = fields.Many2one("salon.services")
+    booking_id = fields.Many2one("salon.booking", ondelete="cascade",)
+    service_id = fields.Many2one("salon.services", required=True)
     service_description = fields.Char(related='service_id.description', string="Description", readonly=True)
     service_duration = fields.Integer(related='service_id.duration', string="Duration", readonly=True)
     service_price = fields.Float(related='service_id.harga', string="Price", readonly=True)

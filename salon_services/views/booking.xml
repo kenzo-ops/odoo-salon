@@ -55,11 +55,20 @@
                            statusbar_visible="draft,konfirmasi,checkin,checkout,batal" />
                 </header>
                     <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-credit-card">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                    </div>
                     <div class="oe_title">
                     <label for="booking_id" class="oe_edit_only" string="Booking Number"/>
                         <h1>
                             <field name="booking_id" style="width:50%"/>
                         </h1>
+                <label for="working_hours" class="oe_edit_only" string="Office Working Hours"/>
+                <h4>
+                    <field name="working_hours" style="width:50%"/>
+                </h4>
                     </div>
                     <group>
                     <group string="Customer Information">
@@ -71,12 +80,12 @@
                     <group string="Booking Information">
                     <field name="branch_id" />
                     <field name="staff_id" domain="[('branch_id', '=', branch_id), ('branch_staff_ids.job_id.name', '=', 'Staff')]"/>
-                    <field name="booking_date" />
-                    <field name="end_date" />
+                    <field name="booking_date" widget="working_hours_datetime"/>
+                    <field name="end_date" placeholder="Pick A Service First"/>
                     <field name="total_price" />
                     </group>
                     </group>
-                    <group string="Services">
+                    <group>
                     <notebook>
                         <page string="Services">
                       <field name="service_booking_id">
@@ -98,6 +107,7 @@
                           <field name="package_state" widget="badge"
                     decoration-danger="package_state=='inactive'"
                     decoration-success="package_state=='active'" />
+                          <field name="package_duration" />
                           <field name="package_total_price" />
                           <field name="package_start_date" />
                           <field name="package_end_date" />
@@ -119,7 +129,7 @@
         </record>
 
         <record id="salon_booking_action" model="ir.actions.act_window">
-                <field name="name">Salon Booking List</field>
+                <field name="name">Booking List</field>
                 <field name="type">ir.actions.act_window</field>
                 <field name="res_model">salon.booking</field>
                 <field name="view_mode">list,form</field>

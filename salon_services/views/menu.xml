@@ -13,11 +13,16 @@
     <menuitem id="salon_management" name="Management" sequence="5" parent="salon_service_root"/>
     <menuitem id="salon_management_branch" name="Branch Office" parent="salon_management" action="salon_branches_action"/>
     <menuitem id="salon_manager_branch" name="Branch Manager" parent="salon_management" action="hr_employee_branch_manager_action"/>
+    <menuitem id="salon_doctor_branch" name="Doctor" parent="salon_management" action="hr_employee_branch_doctor_action"/>
     <menuitem id="salon_staff_branch" name="Staff" parent="salon_management" action="hr_employee_branch_action"/>
     
     <menuitem id="salon_service" name="Service" parent="salon_service_root" sequence="6"/>
     <menuitem id="salon_services" name="Service List" parent="salon_service" action="salon_services_action"/>
     <menuitem id="salon_packages" name="Service Package" parent="salon_service" action="salon_packages_action"/>
+
     <menuitem id="salon_master_data" name="Master Data" parent="salon_service_root" sequence="7"/>
+    <menuitem id="salon_rooms" name="Rooms" parent="salon_master_data" sequence="10" action="salon_rooms_action"/>
+    <menuitem id="salon_working_hours" name="Working Hours" parent="salon_master_data" sequence="11" action="salon_working_hours_action"/>
   </data>
 </odoo>
+

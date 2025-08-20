@@ -1,34 +1,40 @@
 <templates xml:space="preserve">
   <t t-name="owl.ListBookingTable" owl="1">
-    <table class="table table-striped table-hover table-bordered text-dark">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">No</th>
-          <th scope="col">Booking ID</th>
-          <th scope="col">Customer</th>
-          <th scope="col">Service</th>
-          <th scope="col">Booking Date</th>
-          <th scope="col">Status</th>
-          <th scope="col">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <t t-foreach="state.bookings" t-as="b" t-key="b.id">
-        <tr t-on-click="() => openBookingDetail(b.id)" style="cursor: pointer;">
-          <td><t t-esc="b.no"/></td>
-          <td><t t-esc="b.booking_id"/></td>
-          <td><t t-esc="b.customer"/></td>
-          <td><t t-esc="b.service"/></td>
-          <td><t t-esc="b.booking_date"/></td>
-            <td>
-              <span t-if="b.state === 'checkout'" class="badge bg-success rounded-pill">Checkout</span>
-              <span t-elif="b.state === 'konfirmasi'" class="badge bg-warning rounded-pill">Confirmed</span>
-              <span t-else="" class="badge bg-secondary rounded-pill"><t t-esc="b.state"/></span>
-            </td>
-            <td>Rp <t t-esc="b.total_price"/></td>
-          </tr>
-        </t>
-      </tbody>
-    </table>
+    <div class="card h-100">  <!-- h-100 biar sama tinggi dengan chart di sebelah -->
+      <div class="card-body p-0" style="max-height: 380px; overflow-y: auto;">
+        <table class="table table-striped table-hover table-bordered text-dark mb-0">
+          <thead class="table-dark sticky-top">
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Booking ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Service</th>
+              <th scope="col">Booking Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="state.bookings" t-as="b" t-key="b.id">
+              <tr t-on-click="() => openBookingDetail(b.id)" style="cursor: pointer;">
+                <td><t t-esc="b.no"/></td>
+                <td><t t-esc="b.booking_id"/></td>
+                <td><t t-esc="b.customer"/></td>
+                <td><t t-esc="b.service"/></td>
+                <td><t t-esc="b.booking_date"/></td>
+                <td>
+                  <span t-if="b.state === 'checkout'" class="badge bg-warning rounded-pill text-white">Check Out</span>
+                  <span t-elif="b.state === 'konfirmasi'" class="badge bg-success rounded-pill text-white">Confirmed</span>
+                  <span t-elif="b.state === 'checkin'" class="badge bg-primary rounded-pill">Check In</span>
+                  <span t-elif="b.state === 'draft'" class="badge bg-secondary rounded-pill">Draft</span>
+                  <span t-elif="b.state === 'batal'" class="badge bg-danger rounded-pill text-white">Cancelled</span>
+                </td>
+                <td><t t-esc="b.total_price"/></td>
+              </tr>
+            </t>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </t>
 </templates>

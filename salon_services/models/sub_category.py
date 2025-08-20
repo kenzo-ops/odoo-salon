@@ -1,4 +1,5 @@
 from odoo import fields, api, models, _
+from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ class SubCategory(models.Model):
             ("active", "Active"),
         ],
         string="Status",
-        default="inactive"
+        default="active"
     )
 
     product_sub_category_id = fields.Many2one(
@@ -25,6 +26,15 @@ class SubCategory(models.Model):
         string="Related Product Sub Categories",
         readonly=True
     )
+
+    @api.constrains('category_id')
+    def _check_main_category_active(self):
+        """Pastikan main category hanya bisa dipilih jika state = active."""
+        for rec in self:
+            if rec.category_id and rec.category_id.state != 'active':
+                raise ValidationError(_(
+                    "Main Category '%s' cannot be selected because its status is not 'Active'."
+                ) % rec.category_id.name)
 
     @api.onchange('status')
     def _onchange_status(self):

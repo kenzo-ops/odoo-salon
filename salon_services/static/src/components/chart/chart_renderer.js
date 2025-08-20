@@ -36,7 +36,7 @@ export class ServiceChart extends Component {
 
   async loadChartData() {
     if (this.props.chartMode === "service_status") {
-      await this.fetchServiceStatusChart();
+      await this.fetchTopCustomersChart();
     } else if (this.props.chartMode === "booking_trend") {
       await this.fetchBookingTrendChart();
     } else if (this.props.chartMode === "booking_status") {
@@ -44,28 +44,34 @@ export class ServiceChart extends Component {
     }
   }
 
-  // Chart: Status Service
-  async fetchServiceStatusChart() {
+  // === Chart Top Customers ===
+  async fetchTopCustomersChart() {
     const records = await this.env.services.orm.searchRead(
-      "salon.services",
+      "salon.booking",
       [],
-      ["state"]
+      ["customer"]
     );
 
-    const states = ["active", "inactive"];
-    const counts = states.map(
-      (s) => records.filter((r) => r.state === s).length
-    );
+    const customerCounts = {};
+    for (const rec of records) {
+      if (rec.customer) {
+        const custName = rec.customer[1];
+        customerCounts[custName] = (customerCounts[custName] || 0) + 1;
+      }
+    }
 
-    this.state.total = counts.reduce((a, b) => a + b, 0);
+    const sorted = Object.entries(customerCounts).sort((a, b) => b[1] - a[1]);
+    const top5 = sorted.slice(0, 5);
 
-    await this.renderChart(["Active", "Inactive"], counts, "Jumlah Layanan", {
-      Active: "active",
-      Inactive: "inactive",
-    });
+    const labels = top5.map(([name]) => name);
+    const values = top5.map(([_, count]) => count);
+
+    this.state.total = values.reduce((a, b) => a + b, 0);
+
+    await this.renderChart(labels, values, "Top Customers");
   }
 
-  // Chart: Tren Booking per Tanggal
+  // === Booking Trend dengan filter periode ===
   async fetchBookingTrendChart() {
     const records = await this.env.services.orm.searchRead(
       "salon.booking",
@@ -73,12 +79,67 @@ export class ServiceChart extends Component {
       ["booking_date"]
     );
 
+    const dropdown = document.querySelector(
+      ".salon-dashboard-container select"
+    );
+    const selectedPeriod = dropdown ? dropdown.value : "this_month";
+
+    const now = new Date();
+    let startDate = null;
+    let endDate = null;
+
+    if (selectedPeriod === "today") {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 1);
+    } else if (selectedPeriod === "yesterday") {
+      startDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - 1
+      );
+      endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    } else if (selectedPeriod === "this_week") {
+      const day = now.getDay();
+      const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+      startDate = new Date(now.setDate(diff));
+      startDate.setHours(0, 0, 0, 0);
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 7);
+    } else if (selectedPeriod === "last_week") {
+      const day = now.getDay();
+      const diff = now.getDate() - day - 6;
+      startDate = new Date(now.setDate(diff));
+      startDate.setHours(0, 0, 0, 0);
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 7);
+    } else if (selectedPeriod === "this_month") {
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    } else if (selectedPeriod === "last_month") {
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    } else if (selectedPeriod === "this_year") {
+      startDate = new Date(now.getFullYear(), 0, 1);
+      endDate = new Date(now.getFullYear() + 1, 0, 1);
+    } else if (selectedPeriod === "last_year") {
+      startDate = new Date(now.getFullYear() - 1, 0, 1);
+      endDate = new Date(now.getFullYear(), 0, 1);
+    }
+
     const countPerDate = {};
     for (const rec of records) {
-      const dateStr = rec.booking_date
-        ? rec.booking_date.split(" ")[0]
-        : "Unknown";
-      countPerDate[dateStr] = (countPerDate[dateStr] || 0) + 1;
+      if (!rec.booking_date) continue;
+      const dateStr = rec.booking_date.split(" ")[0];
+      const dateObj = new Date(dateStr);
+
+      if (startDate && endDate) {
+        if (dateObj >= startDate && dateObj < endDate) {
+          countPerDate[dateStr] = (countPerDate[dateStr] || 0) + 1;
+        }
+      } else {
+        countPerDate[dateStr] = (countPerDate[dateStr] || 0) + 1;
+      }
     }
 
     const labels = Object.keys(countPerDate).sort();
@@ -89,7 +150,6 @@ export class ServiceChart extends Component {
     await this.renderChart(labels, values, "Tren Booking");
   }
 
-  // Chart: Status Booking
   async fetchBookingStatusChart() {
     const records = await this.env.services.orm.searchRead(
       "salon.booking",
@@ -119,7 +179,6 @@ export class ServiceChart extends Component {
     );
   }
 
-  // Render Chart
   async renderChart(labels, values, labelTitle, statusMap = null) {
     await this.ensureChartJsLoaded();
 
@@ -144,6 +203,35 @@ export class ServiceChart extends Component {
 
     const isFillChart = ["line", "radar"].includes(this.props.type);
 
+    const noDataPlugin = {
+      id: "noData",
+      afterDraw: (chart) => {
+        if (
+          chart.data.datasets[0].data.length === 0 ||
+          chart.data.datasets[0].data.every((v) => v === 0)
+        ) {
+          const { ctx, chartArea } = chart;
+          const { left, right, top, bottom } = chartArea;
+          const x = (left + right) / 2;
+          const y = (top + bottom) / 2;
+
+          ctx.save();
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = textColor;
+          ctx.font = "18px sans-serif";
+
+          let message = "Tidak ada data";
+          if (this.props.chartMode === "booking_trend") {
+            message = "There are no bookings during this period";
+          }
+
+          ctx.fillText(message, x, y);
+          ctx.restore();
+        }
+      },
+    };
+
     this.chartInstance = new Chart(ctx, {
       type: this.props.type || "pie",
       data: {
@@ -166,56 +254,6 @@ export class ServiceChart extends Component {
         plugins: {
           legend: { labels: { color: textColor } },
         },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const index = elements[0].index;
-            const clickedLabel = labels[index];
-
-            // Mode booking_trend → filter berdasarkan tanggal
-            if (
-              this.props.chartMode === "booking_trend" &&
-              clickedLabel !== "Unknown"
-            ) {
-              this.env.services.action.doAction({
-                type: "ir.actions.act_window",
-                name: `Bookings on ${clickedLabel}`,
-                res_model: "salon.booking",
-                view_mode: "list,form",
-                views: [
-                  [false, "list"],
-                  [false, "form"],
-                ],
-                domain: [
-                  ["booking_date", ">=", clickedLabel + " 00:00:00"],
-                  ["booking_date", "<=", clickedLabel + " 23:59:59"],
-                ],
-                target: "current",
-              });
-            }
-
-            // Mode service_status atau booking_status → filter berdasarkan state
-            else if (statusMap) {
-              const statusValue = statusMap[clickedLabel];
-              if (statusValue) {
-                this.env.services.action.doAction({
-                  type: "ir.actions.act_window",
-                  name: `Filtered: ${clickedLabel}`,
-                  res_model:
-                    this.props.chartMode === "service_status"
-                      ? "salon.services"
-                      : "salon.booking",
-                  view_mode: "list,form",
-                  views: [
-                    [false, "list"],
-                    [false, "form"],
-                  ],
-                  domain: [["state", "=", statusValue]],
-                  target: "current",
-                });
-              }
-            }
-          }
-        },
         scales:
           this.props.type === "bar" || this.props.type === "line"
             ? {
@@ -223,13 +261,56 @@ export class ServiceChart extends Component {
                 y: {
                   ticks: {
                     color: textColor,
-                    precision: 0, // memaksa angka bulat
-                    stepSize: 1, // interval tick 1
+                    precision: 0,
+                    stepSize: 1,
                   },
                 },
               }
             : {},
+        onClick: (event, elements) => {
+          if (!elements.length) return;
+
+          const idx = elements[0].index;
+          const label = labels[idx];
+          const value = values[idx];
+
+          console.log("Klik chart:", { label, value });
+
+          let model = null;
+          let domain = [];
+
+          if (this.props.chartMode === "service_status") {
+            model = "salon.booking";
+            domain = [["customer.name", "=", label]];
+          } else if (this.props.chartMode === "booking_status") {
+            model = "salon.booking";
+            if (statusMap && statusMap[label]) {
+              domain = [["state", "=", statusMap[label]]];
+            }
+          } else if (this.props.chartMode === "booking_trend") {
+            model = "salon.booking";
+            domain = [
+              ["booking_date", ">=", label],
+              ["booking_date", "<", label + " 23:59:59"],
+            ];
+          }
+
+          if (model) {
+            this.env.services.action.doAction({
+              type: "ir.actions.act_window",
+              name: labelTitle + " - " + label,
+              res_model: model,
+              views: [
+                [false, "list"],
+                [false, "form"],
+              ],
+              target: "current",
+              domain,
+            });
+          }
+        },
       },
+      plugins: [noDataPlugin],
     });
   }
 

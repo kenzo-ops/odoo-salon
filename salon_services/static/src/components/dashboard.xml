@@ -1,6 +1,6 @@
 <templates xml:space="preserve">
 	<t t-name="owl.OwlServiceDashboard" owl="1">
-		<div class="p-4 bg-body w-100 salon-dashboard-container">
+		<div class="p-4 bg-body w-100 salon-dashboard-container" t-attf-class="salon-dashboard-container #{state.isLoading ? 'no-scroll' : ''}">
 			<!-- Overlay loading fullscreen -->
 			<t t-if="state.isLoading">
 				<div class="dashboard-loading-overlay">
@@ -12,35 +12,35 @@
 			<div class="row align-items-center mb-4">
 				<div class="col-12 col-lg-6">
 					<h1 class="fw-bold m-0">
-						Salon Dashboard
+						Clinic Dashboard
 					</h1>
 				</div>
 				<div class="col-12 col-lg-6 mt-3 mt-lg-0 d-flex flex-wrap align-items-center gap-2 justify-content-lg-end">
 					<div class="bg-white border rounded p-1 d-flex align-items-center">
-						<select class="form-select border-0 fw-bold bg-transparent text-dark w-auto" style="max-width: 150px;">
+						<select class="form-select border-0 fw-bold bg-transparent text-dark w-auto" style="max-width: 150px;" t-on-change="onPeriodChange" t-model="state.period">
 							<option value="today">
-								Hari Ini
+								Today
 							</option>
 							<option value="yesterday">
-								Kemarin
+								Yesterday
 							</option>
 							<option value="this_week">
-								Minggu Ini
+								This Week
 							</option>
 							<option value="last_week">
-								Minggu Lalu
+								Last Week
 							</option>
 							<option value="this_month">
-								Bulan Ini
+								This Month
 							</option>
 							<option value="last_month">
-								Bulan Lalu
+								Last Month
 							</option>
 							<option value="this_year">
-								Tahun Ini
+								This Year
 							</option>
 							<option value="last_year">
-								Tahun Lalu
+								Last Year
 							</option>
 						</select>
 					</div>
@@ -58,19 +58,19 @@
 			<!-- KPI Cards -->
 			<div class="row g-4" t-att-class="props.className">
 				<div class="col-12 col-sm-6 col-lg-4">
-					<ServiceKpiCard img="'/salon_services/static/src/img/customer.png'" title="'Total Services'" model="'salon.services'" clickable="true" className="bg-primary-kpi" />
+					<ServiceKpiCard img="'/salon_services/static/src/img/services.png'" title="'Services'" model="'salon.services'" clickable="true" className="bg-primary-kpi" />
 				</div>
 				<div class="col-12 col-sm-6 col-lg-4">
-					<ServiceKpiCard img="'/salon_services/static/src/img/services.png'" title="'Total Bookings'" model="'salon.booking'" clickable="true" className="bg-primary-kpi" />
+					<ServiceKpiCard img="'/salon_services/static/src/img/booking.png'" title="'Bookings'" model="'salon.booking'" clickable="true" className="bg-primary-kpi" />
 				</div>
 				<div class="col-12 col-sm-6 col-lg-4">
-					<ServiceKpiCard img="'/salon_services/static/src/img/bundle.png'" title="'Package Promo'" model="'salon.packages'" clickable="true" className="bg-primary-kpi" />
+					<ServiceKpiCard img="'/salon_services/static/src/img/package.png'" title="'Packages'" model="'salon.packages'" clickable="true" className="bg-primary-kpi" />
 				</div>
 			</div>
 			<!-- Charts Row 1 -->
-			<div class="row g-4 mt-4" t-att-class="props.className">
+			<div class="row g-4 mt-1" t-att-class="props.className">
 				<div class="col-12 col-lg-6">
-					<ServiceChart type="'bar'" width="w-100" isDarkMode="false" title="'Total Service Status'" chartMode="'service_status'" className="bg-primary-chart" />
+					<ServiceChart type="'bar'" width="w-100" isDarkMode="false" title="'Top Customers'" chartMode="'service_status'" className="bg-primary-chart" />
 				</div>
 				<div class="col-12 col-lg-6">
 					<ServiceChart type="'line'" width="w-100" isDarkMode="false" title="'Booking Trends'" chartMode="'booking_trend'" className="bg-primary-chart" />
@@ -81,10 +81,15 @@
 				<div class="col-12 col-lg-4">
 					<ServiceChart type="'pie'" width="w-25" isDarkMode="false" title="'Top Booking Status'" chartMode="'booking_status'" className="bg-primary-chart" />
 				</div>
-				<div class="col-12 col-lg-8">
-					<h2 class="fw-bold mb-3">
-						Booking List
-					</h2>
+				<div class="col-12 col-lg-8 p-4 bg-white border border-3" style="border-radius: 10px;">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h2 class="fw-bold m-0 fs-3">
+							Upcoming Appointment
+						</h2>
+						<button type="button" class="btn btn-primary btn-sm fs-" t-on-click="createBooking">
+							New
+						</button>
+					</div>
 					<div class="table-responsive">
 						<ListBookingTable />
 					</div>
