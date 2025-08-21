@@ -6,15 +6,19 @@ class ServiceCategory(models.Model):
 
     name = fields.Char(string="Category Name", required=True)
     sub_category_id = fields.One2many("salon.sub.category", "category_id", string="Sub Category", readonly=True)
-    status = fields.Boolean(string="Status", required=True)
+    
+    # Status langsung default True
+    status = fields.Boolean(string="Status", required=True, default=True)
+
     state = fields.Selection(
-        selection = [
+        selection=[
             ("inactive", "Inactive"),
             ("active", "Active"),
         ],
         string="Status",
-        default = "active"
-        )
+        default="active",
+    )
+
     product_category_id = fields.Many2one(
         'product.category',
         string='Related Product Categories',
@@ -28,15 +32,16 @@ class ServiceCategory(models.Model):
 
     @api.model
     def create(self, vals):
+        # Pastikan default aktif saat create
+        vals.setdefault("status", True)
+        vals["state"] = "active"
+
         # Buat product.category terlebih dahulu
         product_category = self.env['product.category'].create({
             'name': vals.get('name', 'No Name')
         })
-        # Simpan ID-nya ke field relasi
         vals['product_category_id'] = product_category.id
 
-        # Sinkronkan state dari status
-        vals['state'] = 'active' if vals.get('status') else 'inactive'
         return super().create(vals)
 
     def write(self, vals):

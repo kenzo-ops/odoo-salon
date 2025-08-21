@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 from datetime import timedelta
 from odoo.exceptions import ValidationError
-import math
+import math 
 
 class SalonBooking(models.Model):
     _name = "salon.booking"
@@ -11,9 +11,9 @@ class SalonBooking(models.Model):
 
     booking_id = fields.Char(string="Booking Number", default="New", readonly=True)
     customer = fields.Many2one("res.partner", string="Customer")
-    customer_number = fields.Char(related="customer.phone", string="Phone Number", readonly=True)
-    customer_address = fields.Char(related="customer.street", string="Adress", readonly=True)
-    customer_email = fields.Char(related="customer.email", string="Email", readonly=True)
+    customer_number = fields.Char(related="customer.phone", string="Phone Number", readonly=True, default="Enter customer data first")
+    customer_address = fields.Char(related="customer.street", string="Adress", readonly=True, default="Enter customer data first")
+    customer_email = fields.Char(related="customer.email", string="Email", readonly=True, default="Enter customer data first")
     booking_date = fields.Datetime(string="Booking Schedule", required=True)
     end_date = fields.Datetime(string="Finish Time", compute="_compute_end_date", store=True, readonly=True)
     state = fields.Selection(
@@ -30,6 +30,12 @@ class SalonBooking(models.Model):
     total_price = fields.Float(string="Total Price", compute="_compute_total_price", store=True, readonly=True)
     invoice_id = fields.Many2one("account.move", string="Invoice", readonly=True)
 
+    attendee_ids = fields.Many2many(
+        "res.partner",
+        "salon_booking_res_partner_rel",
+        "booking_id", "partner_id",
+        string="Attendees"
+    )
 
     staff_id = fields.Many2one("salon.staff", string="Assigned Staff")
     branch_id = fields.Many2one("salon.branches", string="Branch Offices")

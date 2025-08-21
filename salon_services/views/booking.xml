@@ -79,7 +79,7 @@
                     </group>
                     <group string="Booking Information">
                     <field name="branch_id" />
-                    <field name="staff_id" domain="[('branch_id', '=', branch_id), ('branch_staff_ids.job_id.name', '=', 'Staff')]"/>
+                    <field name="staff_id" domain="[('branch_id', '=', branch_id)]"/>
                     <field name="booking_date" widget="working_hours_datetime"/>
                     <field name="end_date" placeholder="Pick A Service First"/>
                     <field name="total_price" />
@@ -114,6 +114,9 @@
                          </list>
                         </field>
                         </page>
+                    <page string="Attendees">
+                        <field name="attendee_ids" widget="many2many_attendee"/>
+                    </page>
                     </notebook>
                     </group>
                     </sheet>

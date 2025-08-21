@@ -10,8 +10,10 @@ class SubCategory(models.Model):
 
     name = fields.Char(string="Name", required=True)
     category_id = fields.Many2one("salon.service.category", string="Main Categories", required=True)
-    status = fields.Boolean(string="Status", required=True)
-    
+
+    # Status Boolean default True (otomatis aktif)
+    status = fields.Boolean(string="Status", default=True)
+
     state = fields.Selection(
         selection=[
             ("inactive", "Inactive"),
@@ -47,9 +49,11 @@ class SubCategory(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['state'] = 'active' if vals.get('status') else 'inactive'
-        category = self.env['salon.service.category'].browse(vals.get('category_id'))
+        # Override supaya saat create selalu aktif
+        vals['status'] = True
+        vals['state'] = 'active'
 
+        category = self.env['salon.service.category'].browse(vals.get('category_id'))
         if category and category.product_category_id:
             product_sub = self.env['product.category'].create({
                 'name': vals.get('name', 'Tanpa Nama'),
