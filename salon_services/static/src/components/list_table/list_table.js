@@ -16,12 +16,15 @@ export class ListBookingTable extends Component {
 
       const records = await this.orm.searchRead(
         "salon.booking",
-        [["booking_date", ">=", today]],
+        [
+          ["booking_date", ">=", today],
+          ["state", "!=", "batal"], // <-- exclude cancelled
+        ],
         [
           "booking_id",
           "customer",
           "service_booking_id",
-          "package_booking_id", // <-- ambil juga package
+          "package_booking_id",
           "booking_date",
           "state",
           "total_price",
@@ -65,13 +68,9 @@ export class ListBookingTable extends Component {
         let names = [];
 
         if (rec.service_booking_id?.length) {
-          names = rec.service_booking_id.map(
-            (sid) => servicesById[sid] || ""
-          );
+          names = rec.service_booking_id.map((sid) => servicesById[sid] || "");
         } else if (rec.package_booking_id?.length) {
-          names = rec.package_booking_id.map(
-            (pid) => packagesById[pid] || ""
-          );
+          names = rec.package_booking_id.map((pid) => packagesById[pid] || "");
         }
 
         return {
@@ -79,7 +78,7 @@ export class ListBookingTable extends Component {
           no: idx + 1,
           booking_id: rec.booking_id,
           customer: rec.customer?.[1] || "",
-          service: names.join(", "), // gabungkan jadi string
+          service: names.join(", "),
           booking_date: rec.booking_date ? rec.booking_date.split(" ")[0] : "",
           state: rec.state,
           total_price: new Intl.NumberFormat("id-ID", {

@@ -46,37 +46,37 @@
 }
 
 .salon-dashboard-container {
+    position: relative; /* ⬅ supaya overlay ikut container */
     overflow-y: auto;
     height: 100%;
 }
 
-.chart-short {
-    height: 250px !important;
-}
-.chart-short canvas {
-    height: 100% !important;
-}
-
+/* Overlay hanya di dalam dashboard */
 .dashboard-loading-overlay {
-    position: fixed;
+    position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.6); /* lebih gelap */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 50; /* cukup tinggi tapi tidak menimpa header global */
 }
 
 .spinner {
     width: 60px;
     height: 60px;
-    border: 6px solid rgba(0, 0, 0, 0.2);
-    border-top-color: #00B4D8;
+    border: 6px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #d4a373; /* pakai warna tema */
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+.no-scroll {
+    overflow: hidden !important;
 }

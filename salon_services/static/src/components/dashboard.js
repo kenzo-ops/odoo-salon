@@ -17,7 +17,7 @@ export class OwlServiceDashboard extends Component {
       countdown: 5,
       intervalId: null,
       isLoading: false,
-      period: "this_month", // default periode
+      period: "this_month", 
     });
 
     // Bind method supaya bisa dipakai di template
