@@ -6,14 +6,29 @@ class Room(models.Model):
 
     name = fields.Char(string="Room Name", required=True)
     branch_id = fields.One2many("salon.branch.room", "room_id")
-    status = fields.Boolean(string="Status", required=True)
+
+    status = fields.Boolean(string="Status", required=True, default=True)
     state = fields.Selection(
-        selection=[
-            ("inactive", "Inactive"),
-            ("active", "Active"),
-        ],
+        selection=[("inactive", "Inactive"), ("active", "Active")],
         string="Status",
         default="active"
+    )
+
+    service_ids = fields.One2many(
+        "salon.services", 
+        "room_id", 
+        string="Services", 
+        readonly=True
+    )
+
+    # Relasi ke Packages (inverse dari room_ids di salon.packages)
+    package_ids = fields.Many2many(
+        "salon.packages",
+        "salon_package_room_rel",
+        "room_id",
+        "package_id",
+        string="Packages",
+        readonly=True
     )
 
     @api.onchange('status')
@@ -27,7 +42,7 @@ class Room(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['state'] = 'active' if vals.get('status') else 'inactive'
+        vals['state'] = 'active' if vals.get('status', True) else 'inactive'
         return super().create(vals)
 
     def write(self, vals):

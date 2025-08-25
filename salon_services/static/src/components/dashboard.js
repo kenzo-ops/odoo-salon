@@ -17,19 +17,18 @@ export class OwlServiceDashboard extends Component {
       countdown: 5,
       intervalId: null,
       isLoading: false,
-      period: "this_month", // default periode
+      period: "this_month", 
     });
 
-    // Bind method supaya bisa dipakai di template
     this.createBooking = this.createBooking.bind(this);
     this.onPeriodChange = this.onPeriodChange.bind(this);
     this.toggleAutoRefresh = this.toggleAutoRefresh.bind(this);
   }
 
-  // === Handler untuk dropdown periode ===
+  
   async onPeriodChange(ev) {
     this.state.period = ev.target.value;
-    await this.refreshData(); // tampilkan overlay saat ganti periode
+    await this.refreshData();
   }
 
   toggleAutoRefresh() {

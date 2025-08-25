@@ -44,41 +44,8 @@ export class ServiceChart extends Component {
     }
   }
 
-  // === Chart Top Customers ===
-  async fetchTopCustomersChart() {
-    const records = await this.env.services.orm.searchRead(
-      "salon.booking",
-      [],
-      ["customer"]
-    );
-
-    const customerCounts = {};
-    for (const rec of records) {
-      if (rec.customer) {
-        const custName = rec.customer[1];
-        customerCounts[custName] = (customerCounts[custName] || 0) + 1;
-      }
-    }
-
-    const sorted = Object.entries(customerCounts).sort((a, b) => b[1] - a[1]);
-    const top5 = sorted.slice(0, 5);
-
-    const labels = top5.map(([name]) => name);
-    const values = top5.map(([_, count]) => count);
-
-    this.state.total = values.reduce((a, b) => a + b, 0);
-
-    await this.renderChart(labels, values, "Top Customers");
-  }
-
-  // === Booking Trend dengan filter periode ===
-  async fetchBookingTrendChart() {
-    const records = await this.env.services.orm.searchRead(
-      "salon.booking",
-      [],
-      ["booking_date"]
-    );
-
+  // === Helper: Ambil date range dari dropdown periode ===
+  getDateRangeFromPeriod() {
     const dropdown = document.querySelector(
       ".salon-dashboard-container select"
     );
@@ -127,6 +94,58 @@ export class ServiceChart extends Component {
       endDate = new Date(now.getFullYear(), 0, 1);
     }
 
+    return { startDate, endDate };
+  }
+
+  // === Chart Top Customers dengan filter periode ===
+  async fetchTopCustomersChart() {
+    const records = await this.env.services.orm.searchRead(
+      "salon.booking",
+      [],
+      ["customer", "booking_date"]
+    );
+
+    const { startDate, endDate } = this.getDateRangeFromPeriod();
+
+    const customerCounts = {};
+    for (const rec of records) {
+      if (!rec.customer || !rec.booking_date) continue;
+
+      const dateStr = rec.booking_date.split(" ")[0];
+      const dateObj = new Date(dateStr);
+
+      if (startDate && endDate) {
+        if (dateObj >= startDate && dateObj < endDate) {
+          const custName = rec.customer[1];
+          customerCounts[custName] = (customerCounts[custName] || 0) + 1;
+        }
+      } else {
+        const custName = rec.customer[1];
+        customerCounts[custName] = (customerCounts[custName] || 0) + 1;
+      }
+    }
+
+    const sorted = Object.entries(customerCounts).sort((a, b) => b[1] - a[1]);
+    const top5 = sorted.slice(0, 5);
+
+    const labels = top5.map(([name]) => name);
+    const values = top5.map(([_, count]) => count);
+
+    this.state.total = values.reduce((a, b) => a + b, 0);
+
+    await this.renderChart(labels, values, "Top Customers");
+  }
+
+  // === Booking Trend dengan filter periode ===
+  async fetchBookingTrendChart() {
+    const records = await this.env.services.orm.searchRead(
+      "salon.booking",
+      [],
+      ["booking_date"]
+    );
+
+    const { startDate, endDate } = this.getDateRangeFromPeriod();
+
     const countPerDate = {};
     for (const rec of records) {
       if (!rec.booking_date) continue;
@@ -150,6 +169,7 @@ export class ServiceChart extends Component {
     await this.renderChart(labels, values, "Tren Booking");
   }
 
+  // === Booking Status ===
   async fetchBookingStatusChart() {
     const records = await this.env.services.orm.searchRead(
       "salon.booking",
@@ -179,12 +199,12 @@ export class ServiceChart extends Component {
     );
   }
 
+  // === Render Chart ===
   async renderChart(labels, values, labelTitle, statusMap = null) {
     await this.ensureChartJsLoaded();
 
     const canvas = this.canvasRef.el;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
 
     const lightColors = ["#5E60CE", "#5390D9", "#48BFE3", "#64DFDF", "#80FFDB"];
@@ -194,7 +214,6 @@ export class ServiceChart extends Component {
         ? darkColors[i % darkColors.length]
         : lightColors[i % lightColors.length]
     );
-
     const textColor = this.props.isDarkMode ? "#FFFFFF" : "#000000";
 
     if (this.chartInstance) {
@@ -221,9 +240,15 @@ export class ServiceChart extends Component {
           ctx.fillStyle = textColor;
           ctx.font = "18px sans-serif";
 
-          let message = "Tidak ada data";
+          let message = "";
           if (this.props.chartMode === "booking_trend") {
             message = "There are no bookings during this period";
+          } else if (this.props.chartMode === "service_status") {
+            message = "No customers made bookings during this period";
+          }else if (this.props.chartMode === "booking_status") {
+            message = "No bookings occurred during this period";
+          } else {
+            message = "No data available for this period";
           }
 
           ctx.fillText(message, x, y);

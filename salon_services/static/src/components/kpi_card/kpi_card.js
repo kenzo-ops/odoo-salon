@@ -4,7 +4,14 @@ import { Component, useState, onWillStart } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
 export class ServiceKpiCard extends Component {
-  static props = ["img", "title", "model", "clickable", "className"];
+  static props = {
+    img: String,
+    title: String,
+    model: String,
+    clickable: { type: Boolean, optional: true },
+    className: { type: String, optional: true },
+    domain: { type: Array, optional: true },   // ✅ opsional
+  };
 
   setup() {
     this.orm = useService("orm");
@@ -12,7 +19,8 @@ export class ServiceKpiCard extends Component {
     this.state = useState({ total: 0 });
 
     onWillStart(async () => {
-      const total = await this.orm.searchCount(this.props.model, []);
+      const domain = this.props.domain || [];   // fallback kosong
+      const total = await this.orm.searchCount(this.props.model, domain);
       this.state.total = total;
     });
   }
@@ -28,6 +36,7 @@ export class ServiceKpiCard extends Component {
           [false, "form"],
         ],
         target: "current",
+        domain: this.props.domain || [],   // fallback kosong
       });
     }
   }

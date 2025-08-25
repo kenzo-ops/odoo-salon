@@ -6,48 +6,72 @@ class Packages(models.Model):
 
     name = fields.Char(string="Name", required=True)
     description = fields.Char(string="Description")
-    status = fields.Boolean(string="Status", required=True)
+
+    status = fields.Boolean(string="Status", default=True)
     state = fields.Selection(
-        selection = [
-            ("inactive", "Inactive"),
-            ("active", "Active"),
-        ],
-        string="Status",
-        default = "active"
-        )
+        selection=[("inactive", "Inactive"), ("active", "Active")],
+        string="State",
+        default="active",
+    )
+
     start_date = fields.Date(string="Effective date", required=True)
     end_date = fields.Date(string="End Date", required=True)
-    total_price = fields.Float(string="Total Package Price", compute="_compute_total_package_price", store=True, readonly=True)
-    duration = fields.Integer(string="Total Duration (Minutes)",compute="_compute_total_duration",store=True,readonly=True)
+
+    total_price = fields.Float(
+        string="Total Package Price",
+        compute="_compute_total_package_price",
+        store=True,
+        readonly=True,
+    )
+    duration = fields.Integer(
+        string="Total Duration (Minutes)",
+        compute="_compute_total_duration",
+        store=True,
+        readonly=True,
+    )
 
     booking_id = fields.Many2one("salon.booking")
-    package_service_id = fields.One2many('salon.package.service','packages_id',string="Service",required=True)
+    package_service_id = fields.One2many(
+        "salon.package.service", "packages_id", string="Service", required=True
+    )
 
-    @api.depends('package_service_id.service_id.duration')
+    # Relasi ke Room
+    room_ids = fields.Many2many(
+        "salon.room",
+        "salon_package_room_rel",
+        "package_id",
+        "room_id",
+        string="Rooms",
+    )
+
+    @api.depends("package_service_id.service_id.duration")
     def _compute_total_duration(self):
         for rec in self:
-            rec.duration = sum(line.service_id.duration for line in rec.package_service_id if line.service_id)
+            rec.duration = sum(
+                line.service_id.duration for line in rec.package_service_id if line.service_id
+            )
 
-
-    @api.depends('package_service_id.total_price')
+    @api.depends("package_service_id.total_price")
     def _compute_total_package_price(self):
         for rec in self:
             rec.total_price = sum(line.total_price for line in rec.package_service_id)
 
-    @api.onchange('status')
+    @api.onchange("status")
     def _onchange_status(self):
         self._sync_state_with_status()
 
     @api.model
     def create(self, vals):
-        vals['state'] = 'active' if vals.get('status') else 'inactive'
+        if "status" not in vals:
+            vals["status"] = True
+        vals["state"] = "active" if vals.get("status") else "inactive"
         return super().create(vals)
 
     def write(self, vals):
-        if 'status' in vals:
-            vals['state'] = 'active' if vals['status'] else 'inactive'
+        if "status" in vals:
+            vals["state"] = "active" if vals["status"] else "inactive"
         return super().write(vals)
 
     def _sync_state_with_status(self):
         for rec in self:
-            rec.state = 'active' if rec.status else 'inactive'
+            rec.state = "active" if rec.status else "inactive"

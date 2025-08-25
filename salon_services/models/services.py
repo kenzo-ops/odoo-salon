@@ -11,7 +11,11 @@ class Services(models.Model):
     harga = fields.Float(string="Service Price", required=True)
     category = fields.Many2one('salon.service.category', string="Category", required=True)
     sub_category = fields.Many2one('salon.sub.category', string="Sub Category", required=True)
-    status = fields.Boolean(string="Status", required=True)
+    room_id = fields.Many2one("salon.room", string="Room")
+    
+    # default True supaya otomatis aktif
+    status = fields.Boolean(string="Status", required=True, default=True)  
+    
     state = fields.Selection(
         selection=[
             ("inactive", "Inactive"),
@@ -25,7 +29,6 @@ class Services(models.Model):
     packages_id = fields.Many2one('salon.packages') 
     branch_id = fields.Many2one("salon.branches", string="Branches")
     booking_id = fields.Many2one("salon.booking")
-
 
     @api.constrains('category')
     def _check_category_active(self):
@@ -46,7 +49,11 @@ class Services(models.Model):
 
     @api.model
     def create(self, vals):
+        # kalau status ga dikirim, set default True
+        if 'status' not in vals:
+            vals['status'] = True
         vals['state'] = 'active' if vals.get('status') else 'inactive'
+
         name = vals.get('name')
         harga = vals.get('harga', 0.0)
         description = vals.get('description', '')
@@ -77,7 +84,6 @@ class Services(models.Model):
             vals['state'] = 'active' if vals['status'] else 'inactive'
         return super().write(vals)
     
-
     @api.model
     def get_service_status_count(self):
         active_count = self.search_count([('state', '=', 'active')])

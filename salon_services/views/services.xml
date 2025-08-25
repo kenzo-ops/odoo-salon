@@ -48,6 +48,9 @@
                     <field name="duration" />
                     <field name="harga" />
                     </group>
+                    <group string="Available Rooms">
+                    <field name="room_id"/>
+                    </group>
                     </sheet>
                 </form>
             </field>

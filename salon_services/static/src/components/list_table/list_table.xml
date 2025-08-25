@@ -1,40 +1,37 @@
 <templates xml:space="preserve">
-  <t t-name="owl.ListBookingTable" owl="1">
-    <div class="card h-100">  <!-- h-100 biar sama tinggi dengan chart di sebelah -->
-      <div class="card-body p-0" style="max-height: 380px; overflow-y: auto;">
-        <table class="table table-striped table-hover table-bordered text-dark mb-0">
-          <thead class="table-dark sticky-top">
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Booking ID</th>
-              <th scope="col">Customer</th>
-              <th scope="col">Service</th>
-              <th scope="col">Booking Date</th>
-              <th scope="col">Status</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <t t-foreach="state.bookings" t-as="b" t-key="b.id">
-              <tr t-on-click="() => openBookingDetail(b.id)" style="cursor: pointer;">
-                <td><t t-esc="b.no"/></td>
-                <td><t t-esc="b.booking_id"/></td>
-                <td><t t-esc="b.customer"/></td>
-                <td><t t-esc="b.service"/></td>
-                <td><t t-esc="b.booking_date"/></td>
-                <td>
-                  <span t-if="b.state === 'checkout'" class="badge bg-warning rounded-pill text-white">Check Out</span>
-                  <span t-elif="b.state === 'konfirmasi'" class="badge bg-success rounded-pill text-white">Confirmed</span>
-                  <span t-elif="b.state === 'checkin'" class="badge bg-primary rounded-pill">Check In</span>
-                  <span t-elif="b.state === 'draft'" class="badge bg-secondary rounded-pill">Draft</span>
-                  <span t-elif="b.state === 'batal'" class="badge bg-danger rounded-pill text-white">Cancelled</span>
-                </td>
-                <td><t t-esc="b.total_price"/></td>
-              </tr>
-            </t>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </t>
+	<t t-name="owl.ListBookingTable" owl="1">
+		<div class="card h-100">
+			<div class="card-body p-0" style="max-height: 380px; overflow-y: auto;">
+				<div class="list-group list-group-flush">
+					<t t-foreach="state.bookings" t-as="b" t-key="b.id">
+						<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" t-on-click="() => openBookingDetail(b.id)" style="cursor: pointer;">
+							<!-- Kiri -->
+							<div>
+								<h4 class="mb-1 fw-bold">
+									<t t-esc="b.customer" />
+								</h4>
+								<small>
+									<t t-esc="b.date_label" />
+									<t t-esc="b.time_label" />
+								</small>
+								<div>
+									<t t-esc="b.service" />
+								</div>
+								<div>
+									<t t-esc="b.room" />
+								</div>
+							</div>
+							<div class="text-end">
+								<i class="fa fa-clock text-info me-1">
+								</i>
+								<span class="text-info">
+									<t t-esc="b.day_label" />
+								</span>
+							</div>
+						</div>
+					</t>
+				</div>
+			</div>
+		</div>
+	</t>
 </templates>
